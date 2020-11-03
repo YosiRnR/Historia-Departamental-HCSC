@@ -1,0 +1,522 @@
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif
+}
+/*
+body > * {
+	display: none;
+}
+*/
+input[type=text]::-ms-clear {
+	display: none;
+}
+
+/* Msg-Box background (gray background) */
+#msg-box-background {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	padding-top: 300px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+#msg-box-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 40%;
+}
+
+#msg-box-close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 38px;
+	font-weight: bold;
+	margin: -13px 1px;
+}
+
+#msg-box-close:hover, #msg-box-close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/*------------------LOADER-----------------------*/
+#fondo-loader {
+	display: none;
+	position: fixed;
+	z-index: 30;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+#loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 1;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	border: 16px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 16px solid #3498db;
+	width: 120px;
+	height: 120px;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+/*------------------CABECERA-----------------------*/
+header {
+	display: flex;
+	align-items: center;
+	justify-content: center
+}
+
+#logo {
+	width: 30%;
+}
+
+#plogo {
+	width: 5%;
+}
+
+#logo img {
+	max-width: calc(100%);
+	min-width: 260px;
+}
+
+#title {
+	text-align: center;
+	width: 70%;
+}
+
+h1 {
+	padding: 0 15px;
+}
+/*-------------------FIN CABECERA-------------------*/
+
+/*-------------------BOTONES------------------------*/
+.btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.btn button {
+	font-weight: bold;
+	padding: 7px;
+	border: 1px solid #369acc;
+	background-color: white;
+	box-shadow: 5px 5px 5px gray
+}
+
+.btn button:hover {
+	background-color: #369acc;
+	color: white;
+	cursor: pointer;
+}
+
+.btn button:active {
+	background-color: #e53832;
+	border: 1px solid #e53832;
+}
+
+.btn button:focus {
+	outline: 0;
+}
+
+.btn button:disabled {
+	color: gray;
+	background-color: lightblue; /*lightgray;*/
+	box-shadow: 5px 5px 5px gray
+}
+
+.btn button:not (:disabled ):hover {
+	background-color: #369acc;
+	color: white;
+	cursor: pointer;
+}
+
+.btn button:not (:disabled ):active {
+	background-color: #e53832;
+	border: 1px solid #e53832;
+}
+
+/*-------------------FIN BOTONES--------------------*/
+
+/*-------------------FORMULARIOS--------------------*/
+main div div {
+	position: relative;
+}
+
+select, input {
+	height: 30px;
+}
+
+form {
+	width: 90%;
+	margin: 20px auto;
+}
+
+fieldset {
+	padding: 30px 20px 20px;
+	border: 2px solid #369acc;
+}
+
+legend {
+	padding: 0 10px;
+	font-weight: bold;
+}
+
+fieldset > div {
+	display: flex;
+	align-items: center;
+}
+
+fieldset > div:not(:last-child ) {
+	margin-bottom: 20px;
+}
+
+fieldset > div div {
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+
+label, select {
+	display: block;
+	width: 35%;
+	text-align: right;
+	padding-right: 10px;
+}
+
+select {
+	padding: 4px;
+	border: 1px solid #369acc;
+}
+
+input {
+	width: 65%;
+	padding: 5px;
+	border: 1px solid #369acc;
+}
+
+input[type=date] {
+	width: 40%;
+}
+
+input:focus {
+	outline: 0;
+}
+
+.calIcon {
+	width: auto;
+	position: absolute;
+	left: 5px;
+	top: 5px;
+}
+
+.clean {
+	width: auto;
+	position: absolute;
+	right: -5px;
+	top: 5px;
+	display: none;
+}
+
+.calIcon, .clean {
+	margin-top: -1 px;
+	padding-top: -1 px;
+}
+/*-------------------FIN FORMULARIOS---------------*/
+
+/*------------------CALENDARIO-------------------*/
+#cal {
+	display: none;
+	z-index: 20;
+	position: absolute;
+	top: 7px;
+	right: 3px;
+}
+
+#calendario {
+	font-size: 0.7rem;
+	border: 1px solid #369acc;
+	border-radius: 5px;
+	border-spacing: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin: 20px auto;
+	background-color: white;
+}
+
+#calendario thead *, #tablaMes * {
+	text-decoration: none !important;
+}
+
+#calMes, #calAnio {
+	font-size: 0.7rem;
+}
+
+#calendario th, #cal td {
+	width: 40px;
+	text-align: center;
+	padding: 3px;
+	text-transform: uppercase;
+}
+
+#calendario thead tr:last-child th {
+	font-weight: bold;
+	border-bottom: 1px solid #369acc;
+	background-color: #d4e0e7;
+}
+
+#calendario thead tr:nth-child(2) {
+	height: 10px;
+}
+
+.diaGris {
+	color: gray;
+}
+
+#calendario thead tr:first-child th:hover, #calendario td:hover,
+	.selectDia {
+	background-color: #369acc !important;
+	color: white;
+	cursor: pointer;
+}
+
+.calendar {
+	width: 100% !important;
+	padding-left: 32px;
+	padding-right: 32px;
+}
+
+#tablaMes {
+	display: none;
+	position: absolute;
+	top: 27px;
+	padding: 0 5px 5px;
+	border: 1px solid #369acc;
+	background-color: white;
+	font-size: 0.6rem;
+	width: 80%;
+	margin: auto;
+	left: 30px;
+	box-shadow: 2px 2px 2px #369acc;
+	border-spacing: 0;
+	border-radius: 5px;
+}
+
+#tablaMes thead, #tablaMes tbody {
+	margin: auto;
+}
+
+#tablaMes th {
+	font-size: 0.7rem;
+	width: 25%;
+}
+
+#tablaMes td {
+	border: 1px solid #369acc;
+	background-color: white;
+	padding: 12px 2px;
+	width: 25% !important;
+}
+
+#tablaMes td:hover {
+	background-color: #369acc;
+	color: white;
+	cursor: pointer;
+}
+
+#inputAnio {
+	height: 28px !important;
+	width: 30%;
+	margin: 3px 0;
+}
+
+#btnAnio {
+	border: 1px solid #369acc;
+	background-color: #369acc;
+	height: 28px;
+	padding: 0 10px;
+}
+
+#btnAnio:hover {
+	color: #369acc;
+	background-color: white !important;
+}
+
+/*-------------------TABLAS------------------------*/
+/*
+#tabla table {
+	width: 100%;
+	border-spacing: 0;
+	border: 1px solid #369acc;
+}
+
+#tabla table tr > * {
+	padding: 6px;
+	text-align: left;
+	border-right: 1px solid #369acc;
+}
+
+#tabla table tr > *:nth-child(1) {
+	display: none;
+}
+
+#tabla table tr > *:nth-child(2) {
+	width: 100%;
+}
+
+#tabla table tr > td:nth-child(n+3) {
+	text-align: right;
+	width: 20%;
+}
+
+#tabla table tr > *:nth-child(5) {
+	border-right: 0;
+}
+
+#tabla table tr th {
+	background-color: #CAE3F0;
+}
+
+#tabla table td {
+	text-align: center;
+}
+
+#tabla table tr:nth-child(even) {
+	background-color: #F7E2E1;
+}
+*/
+.oculto {
+	display: none;
+}
+thead {
+	background-color: #CAE3F0;
+}
+#tabla table {
+	width: 100%;
+	border-spacing: 0;
+	border: 1px solid #369acc;
+}
+#tabla table tr > * {
+	/*padding: 12px;*/
+	text-align: left;
+	border-right: 1px solid #369acc;
+}
+#tabla table #tabla td {
+    text-align: center;
+}
+table button {
+	width: auto;
+}
+#tabla table tr:nth-child(even) {
+    background-color: #F7E2E1;
+}        
+#tabla table tr > *:nth-child(5) {
+	border-right: 0;
+}
+
+#tabla table tr > *:nth-child(4) {
+	text-align: right;
+}
+
+#table-pacientes_wrapper {
+	display: block;
+	padding-right: 20px;
+}
+
+#table-pacientes_wrapper select, #table-pacientes_wrapper input {
+	display: inline;
+	width: auto;
+}    
+
+#table-pacientes_wrapper label {
+	width: auto;
+	padding-bottom: 10px;
+}
+
+.table-text-align-right {
+	text-align: right !important;
+}    
+.table-text-align-left {
+	text-align: left !important;
+}    
+
+/*-------------------FIN TABLAS--------------------*/
+@media ( max-width :1200px) {
+	input[type=date] {
+		width: 65%;
+	}
+}
+
+@media ( max-width :900px) {
+	/*------------------CABECERA-----------------------*/
+	header {
+		display: block;
+	}
+	#logo {
+		width: 100%;
+	}
+	#logo img {
+		width: 1000%;
+	}
+	#title {
+		width: 100%;
+		padding-bottom: 25px;
+	}
+	/*-------------------FIN CABECERA-------------------*/
+
+	/*------------------FORMULARIOS---------------------*/
+	form {
+		width: 97%;
+	}
+	fieldset {
+		padding: 10px;
+		border: 2px solid #369acc;
+	}
+	fieldset > div:not(:last-child ) {
+		margin: 0;
+	}
+	form div {
+		display: block;
+		width: 100%;
+	}
+	form div div {
+		margin-bottom: 5px;
+	}
+	form label {
+		text-align: left;
+	}
+}
+/*------------------FIN FORMULARIOS-----------------*/

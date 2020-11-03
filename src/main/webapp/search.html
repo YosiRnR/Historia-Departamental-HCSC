@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>HCSCPsiquiatria Búsqueda de Pacientes</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+		<script type="application/javascript" src="js/config.js"></script>
+	</head>
+	
+	<body>
+		<header>
+			<div id="logo">
+				<img alt="logoHCSC" src="img/logo.jpg">
+			</div>
+			
+			<div id="title">
+				<h1>HISTORIA DEPARTAMENTAL DE PSIQUIATRÍA</h1>
+			</div>
+		</header>
+		
+		<main>		
+	        <div id="msg-box-background" style="display:none">
+	            <div id="msg-box-content">
+	                <span id="msg-box-close" onclick="closeMessageBox()">&times;</span>
+	                <p></p>
+	            </div>
+	        </div>
+		
+			<div style="display: flex; justify-content: center;">
+				<div class="btn">
+					<button id="btn-nuevo" onclick="nuevo();">Nuevo Paciente</button>
+				</div>
+				<div class="btn" style="position: absolute; right: 100px;">
+		          	<button id="cerrar-sesion" onclick="cerrarSesion();">Cerrar Sesión</button>
+		        </div>               
+	        </div>
+			
+			<form id="filtro">
+				<fieldset>
+					<legend>Búsqueda de Pacientes</legend>
+					<div>
+						<div>
+							<label for="p-ape">Primer Apellido:</label>
+							<input id="p-ape" type="text" autocomplete="off">
+						</div>
+						<div>
+							<label for="s-ape">Segundo Apellido:</label>
+							<input id="s-ape" type="text" autocomplete="off">
+						</div>
+						<div>
+							<label for="nombre">Nombre:</label>
+							<input id="nombre" type="text" autocomplete="off">
+						</div>
+					</div>
+					
+					<div>
+						<div>
+							<select id="sel-doc">
+								<option value="0" selected>-- Documento</option>
+								<option value="1">DNI</option>
+								<option value="2">PASAPORTE</option>
+								<option value="3">NIE</option>
+							</select>
+							<input id="num-doc" type="text" autocomplete="off">
+						</div>
+						<div>
+							<label for="fec-nac">Fecha de Nacimiento:</label>
+							<div>
+								<label class="calIcon" for="fec-nac">📅</label>
+								<input class="calendar" id="fec-nac" type="text" readonly autocomplete="off">
+                                <label class="clean">❌</label>
+							</div>
+						</div>
+						<div>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			
+            <form id="filtro-ids">
+            	<fieldset>
+            		<legend>Búsqueda por Identificadores</legend>
+            		<div>
+	            		<div>
+	            			<label for="num-hc">Número de Historia Clínica:</label>
+	            			<input id="num-hc" type="text" autocomplete="off">
+	            		</div>
+	            		<div>
+	            			<label for="num-cipa">Número CIPA:</label>
+	            			<input id="num-cipa" type="text" autocomplete="off">
+	            		</div>
+	            		<div>
+	            			<label for="num-ts">Número de Tarjeta Sanitaria:</label>
+	            			<input id="num-ts" type="text" autocomplete="off">
+	            		</div>
+            		</div>
+            	</fieldset>
+            </form>
+            
+            <div class="btn">
+                <button id="btn-buscar" onclick="buscar()">Buscar</button>
+            </div>
+            
+            <div style="margin-top: 20px; display: flex; align-items: center; justify-content: center">
+            	<label for="modo-consulta" style="width: auto;">Modo Consultar</label>
+            	<input type="checkbox" id="cb-modo-consulta" style="height: 16px; width: 16px;">
+            </div>
+
+			<div id="fondo-loader">
+				<div id="loader"></div>
+			</div>
+
+			<form id="tabla">
+            	<fieldset>
+            		<legend>Resultado de la Búsqueda</legend>
+            		<div>
+            			<table id="table-pacientes" class="display responsive nowrap" style="width:'100%'">
+            				<thead>
+            					<tr>
+            						<th class="oculto">IdPaciente</th>
+            						<th style="width: 45%;">Nombre</th>
+            						<th style="width: 20%;">Fecha de Nacimiento</th>
+            						<th style="width: 20%;">DNI / NIE / Pasaporte</th>
+            						<th style="width: 15%;"></th>
+            						<th class="oculto">NumeroHC</th>
+            					</tr>
+            				</thead>
+            				<tbody id="filas">
+            				</tbody>
+            			</table>
+            		</div>
+            	</fieldset>
+            </form>
+            <div id="cal">
+                <table id="calendario">
+                    <thead>
+                        <tr>
+                            <th onclick="previousYear()">&#60;&#60;</th>
+                            <th onclick="previousMonth()">&#60;</th>
+                            <th colspan="3" onclick="selectMY()"><span id="calMes"></span> <span id="calAnio"></span></th>
+                            <th onclick="nextMonth()">&#62;</th>
+                            <th onclick="nextYear()">&#62;&#62;</th>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <th>L</th>
+                            <th>M</th>
+                            <th>X</th>
+                            <th>J</th>
+                            <th>V</th>
+                            <th>S</th>
+                            <th>D</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+		</main>		
+		
+		<script type="application/javascript" src="js/jquery-3.4.1.min.js"></script>
+		<script type="application/javascript" src="js/calendar.js"></script>
+        <!--script type="application/javascript" src="js/jquery.dataTables.min.js"></script-->
+		<script type="text/javascript" src="DataTables/datatables.min.js"></script>
+		<script type="application/javascript" src="js/aes.js"></script>	
+		<script type="application/javascript" src="js/search.js"></script>	
+			
+	</body>
+</html>

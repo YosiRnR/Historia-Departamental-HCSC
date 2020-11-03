@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>HCSCPsiquiatria Login</title>
+		<link rel="stylesheet" type="text/css" href="css/login.css">
+		<script type="application/javascript" src="js/login.js"></script>
+		<script type="application/javascript" src="js/config.js"></script>
+	</head>
+	
+	<body>
+		<div id="fondo-loader">
+			<div id="loader"></div>
+		</div>
+		
+    	<div id="msg-box-background" style="display:none">
+        	<div id="msg-box-title-content">
+        		<p>Historia Departamental</p>
+	          	<span id="msg-box-close" onclick="closeMessageBox()">&times;</span>
+        	</div>
+        	<div id="msg-box-content" style="display: flex; justify-content: space-between; align-items: center;">
+                <!--div>
+                	<span id="msg-box-close" onclick="closeMessageBox()">&times;</span>
+                </div-->
+                <p style="margin-right: 25px;"></p>
+                <div>
+                	<button class="btn-msgbox" onclick="closeMessageBox()">CERRAR</button>
+                </div>
+            </div>
+        </div>
+	
+		<div id="logo">
+			<img alt="logoHCSC" src="img/logo.jpg">
+		</div>
+		<h2>HISTORIA DEPARTAMENTAL de PSIQUIATRÍA - Registro Básico</h2>
+		
+		<div id="login">
+			<form>
+			
+				<div class="item">
+					<label for="username">Id Profesional:</label>
+					<input type="text" id="username" name="username">
+				</div>
+				
+				<div class="item">
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="password">
+				</div>
+				
+				<div id="check-calle">
+					<input type="checkbox" id="equipo-calle">
+					<label for="equipo-calle">Equipo de calle de salud mental</label>
+				</div>
+				
+				<input type="button" value="Iniciar Sesión" onclick="login()">
+				
+			</form>
+
+			<div style="text-align: center; margin: 40px;">
+				<a href="pdf/Manual.pdf">Manual de ayuda</a>
+			</div>
+				
+		</div>
+		
+		<script type="application/javascript" src="js/jquery-3.4.1.min.js"></script>
+		<script type="application/javascript" src="js/aes.js"></script>
+	</body>
+	
+</html>

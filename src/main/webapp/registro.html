@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>HCSCPsiquiatria Registro Paciente</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="css/registro.css">
+		<script type="application/javascript" src="js/jquery-3.4.1.min.js"></script>
+		<script type="application/javascript" src="js/aes.js"></script>	
+        <script type="application/javascript" src="js/FileSaver.min.js"></script>
+		<script type="application/javascript" src="js/config.js"></script>
+	</head>
+	<body>
+		<header>
+			<div id="logo">
+				<img src="img/logo.jpg" alt="Logo" id="logo-img">
+			</div>
+			
+			<div id="title">
+				<h1>HISTORIA DEPARTAMENTAL DE PSIQUIATRÍA</h1>
+			</div>
+			<div id="fecha">
+				<form id="filtro">
+					<fieldset>
+						<legend>Fecha de Modificiación del Registro Actual</legend>
+						<div>
+							<div>
+								<label for="fec-mod" id="label-fec-mod">Fecha:</label>
+								<select id="fec-mod" onchange="cambioFechaActuacion()">
+									<option value="0" selected disabled>-- Fecha actuaciones</option>
+								</select>
+								<span id="num-reg"></span>
+							</div>
+						</div>
+						<div>
+							<div class="btn">
+								<button id="btn-reg-ant" onclick="registroAnterior()">◀ Registro Anterior</button>
+							</div>
+							<div class="btn">
+								<button id="btn-reg-post" onclick="registroSiguiente()">Registro Siguiente ▶</button>
+							</div>
+						</div>
+						<div>
+							<div class="btn">
+								<button id="btn-guardar" onclick="guardarRegistro()">Cerrar Registro</button>
+							</div>
+							<div class="btn">
+								<button id="btn-nuevo" onclick="clickNuevo()">Nuevo Paciente</button>
+							</div>
+						</div>
+
+						<div>
+							<div class="btn">
+					          	<button id="nuevo-registro" onclick="nuevoRegistro();">Nuevo Registro</button>
+					        </div>               
+							<div class="btn">
+					          	<button id="cerrar-sesion" onclick="cerrarSesion();">Cerrar Sesión</button>
+					        </div>
+				        </div>               
+
+					</fieldset>
+				</form>
+			</div>
+		</header>
+		
+        <div id="fondo-loader">
+            <div id="loader"></div>
+        </div>
+        
+        <div id="msg-box-background" style="display:none">
+        	<div id="msg-box-title-content">
+        		<p>Historia Departamental</p>
+                <span id="msg-box-close" onclick="closeMessageBox()">&times;</span>
+        	</div>
+            <div id="msg-box-content" style="display: flex; justify-content: space-between; align-items: center;">
+                <!--span id="msg-box-close" onclick="closeMessageBox()">&times;</span-->
+                <p style="margin-right: 15px;"></p>
+                <div>
+                	<button class="btn-msgbox" onclick="closeMessageBox()">CERRAR</button>
+                </div>
+            </div>
+        </div>
+        
+        <main>
+        	<div class="col">
+        		<form id="paciente">
+        			<fieldset>
+        				<legend>Datos del Paciente</legend>
+        				<div>
+        					<div><label for="nombre">Nombre:</label><input id="nombre" name="nombre" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="apellido1">Primer Apellido:</label><input id="apellido1" name="apellido1" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="apellido2">Segundo Apellido:</label><input id="apellido2" name="apellido2" type="text"></div>
+        				</div>
+        				<div>
+        					<div>
+        						<label for="sexo">Sexo:</label>
+        						<select id="sexo" name="sexo">
+        							<option value="0" selected>-- Seleccione sexo</option>
+        							<option value="1">MASCULINO</option>
+        							<option value="2">FEMENINO</option>
+        							<option value="3">INDETERMINADO</option>
+        							<option value="9">DESCONOCIDO</option>
+        						</select>
+        					</div>
+        				</div>
+        				<div>
+        					<div>
+        						<label for="fec-nac">Fecha de Nacimiento:</label>
+        						<div>
+        							<label class="calIcon" for="fec-nac">📅</label>
+        							<input class="calendar" id="fec-nac" name="fec-nac" type="text" readonly>
+        							<label class="clean">❌</label>
+        						</div>
+        					</div>
+        				</div>
+        				<div>
+        					<div><label for="direccion">Dirección:</label><input id="direccion" name="direccion" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="poblacion">Población:</label><input id="poblacion" name="poblacion" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="cp">CP:</label><input id="cp" name="cod-postal" type="text"></div>
+        				</div>
+        				<div id="dni">
+        					<div>
+        						<select id="sel-dni">
+        							<option value="0" selected>-- Documento</option>
+        							<option value="1">DNI</option>
+        							<option value="2">PASAPORTE</option>
+        							<option value="3">NIE</option>
+        						</select>
+        						<input id="num-doc" name="num-doc" type="text">
+        					</div>
+        				</div>
+        				<div>
+        					<div><label for="n-hist-cli">Nº Historia Clínica:</label><input id="n-hist-cli" name="numeroHC" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="n-ss">Nº Seguridad Social:</label><input id="n-ss" name="numeroSS" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="n-tar-san">Nº Tarjeta Sanitaria:</label><input id="n-tar-san" name="numeroTS" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="n-cipa">Nº CIPA:</label><input id="n-cipa" name="numeroCIPA" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="tel-1">Nº Teléfono 1:</label><input id="tel-1" name="telefono1" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="tel-2">Nº Teléfono 2:</label><input id="tel-2" name="telefono2" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="familiar">Familiar:</label><input id="familiar" name="familiar" type="text"></div>
+        				</div>
+        				<div>
+        					<div><label for="tel-fam">Nº Teléfono Familiar:</label><input id="tel-fam" name="telefono-familiar" type="text"></div>
+        				</div>
+        			</fieldset>
+        		</form>
+                <form id="agenda">
+                    <fieldset>
+                        <legend>Agenda</legend>
+                        <div>
+                            <div><label for="id-agenda">Código Agenda:</label><input id="id-agenda" name="id-agenda" type="text"></div>
+                        </div>
+                        <div>
+                            <div><label for="profesional">Profesional:</label><input id="profesional" name="id-profesional" type="text" disabled></div>
+                            <input type="hidden" id="cod-empleado">
+                        </div>
+                        <div>
+                            <div>
+                            	<label for="lugar-ate">Lugar de atención:</label>
+                            	<div id="l-ate-wrap"><input type="text" id="lugar-ate" name="lugar-ate">
+                            	</div>
+							</div>
+                        </div>
+                        <div>
+                            <div>
+                            	<label for="tipo-prest">Tipo de prestación:</label>
+                            	<input type="text" id="tipo-prest" name="tipo-prest">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <form id="eq-calle-form">
+                    <fieldset>
+                        <legend>Equipo Calle</legend>
+                        <div class="checks">
+                            <div id="eq-calle">
+                                <input type="checkbox" id="equipo-calle" disabled>
+                                <label for="equipo-calle">Equipo de calle de salud mental</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <form id="alta">
+                    <fieldset class="tri-col">
+                        <legend>Alta</legend>
+                        <div>
+                            <div>
+                                <input type="checkbox" id="alta-check" autocomplete="off">
+                                <label for="alta-check">Alta médica:</label>
+                                <div class="calDiv">
+                                    <label class="calIcon" for="cal-alta">📅</label>
+                                    <input type="text" class="calendar" id="cal-alta" readonly="readonly" autocomplete="off" disabled="disabled">
+                                    <label class="clean">❌</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <label for="motivo">Motivo: </label>
+                                <select id="motivo" disabled="disabled">
+                                    <!--<option value="0" selected>-- Seleccione motivo</option>-->
+                                    <!--option value="1">Derivación AP</option>
+                                    <option value="2">Derivación otro especialista o servicio</option>
+                                    <option value="3">Derivación a CSM del HCSC</option>
+                                    <option value="4">Traslado área</option>
+                                    <option value="5">Abandono</option>
+                                    <option value="6">Defunción</option-->
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>		
+        	</div>
+            <div class="col" id="col-diag">
+            	<fieldset id="datos-clinicos-fieldset">
+            		<legend>Datos Clínicos</legend>
+           			<label for="antecedentes">Antecedentes:</label><textarea id="antecedentes" spellcheck="false"></textarea>
+           			<label for="hist-actual" style="margin-top: 10px;">Enfermedad Actual:</label><textarea id="hist-actual" spellcheck="false"></textarea>
+           			<label for="evolucion-comentarios" style="margin-top: 10px;">Evolución y Comentarios:</label><textarea id="evolucion-comentarios" spellcheck="false"></textarea>
+            	</fieldset>
+            	
+                <fieldset>
+                    <legend>Datos del Diagnóstico</legend>
+                    <form id="diag-psi-prin">
+                        <fieldset>
+                            <legend>Diágnóstico Psiquiátrico Principal</legend>
+                        </fieldset>
+                    </form>
+                    <form id="diag-psi-sec">
+                        <fieldset>
+                            <legend>Diágnóstico Psiquiátrico Secundario</legend>
+                        </fieldset>
+                    </form>
+                    <form id="diag-no-psi">
+                        <fieldset>
+                            <legend>Diágnósticos No Psiquiátricos</legend>
+                        </fieldset>
+                    </form>
+                    <form id="form-estadiaje">
+                        <fieldset>
+                            <legend>Estadiaje Clínico de la Depresión / Psicosis</legend>
+                        </fieldset>
+                    </form>
+                </fieldset>
+                <fieldset>
+                    <legend>Situación clínica y funcional</legend>
+                    <form id="sit-clin">
+                        <fieldset class="fs-hidden">
+                        </fieldset>
+                    </form>
+
+                    <form id="discapacidad-das">
+                        <fieldset>
+                            <legend>Discapacidad DAS</legend>
+                            <span class="enlace enlace-seccion"><a target="_blank" href="./pdf/Escala WHO-DAS.pdf">Descargar manual de uso</a></span>
+                            <p class="sub-title">Cumplimentar sólo en psicosis y si hay discapacidad</p>
+                        </fieldset>
+                    </form>
+                </fieldset>
+                <fieldset class="checks">
+                    <legend>Incapacidad Civil</legend>
+                    <div class="tri">
+                        <input type="checkbox" id="total"><label for="total">Total</label>
+                    </div>
+                    <div class="tri">
+                        <input type="checkbox" id="cur-salud"><label for="cur-salud">Curatela Salud</label>
+                    </div>
+                    <div class="tri">
+                        <input type="checkbox" id="cur-eco"><label for="cur-eco">Curatela Económica</label>
+                    </div>
+                </fieldset>
+
+
+                <fieldset class="checks">
+                    <legend>Unidad de Niños y Adolescentes. Sistema de Protección de menores</legend>
+                    <div class="tri">
+                        <input type="checkbox" id="med-proteccion"><label for="med-proteccion">Medida de protección</label>
+                    </div>
+                    <div class="tri">
+                        <input type="checkbox" id="residencia"><label for="residencia">Residencia</label>
+                    </div>
+                </fieldset>
+
+
+                
+       			<div style="display: flex; justify-content: space-around;">
+	       			<div class="btn">
+	                  	<button id="informe" onclick="imprimirInforme(false, true)" style="margin-top: 10px;">Generar Informe</button>
+	                </div>               
+	       			<div class="btn">
+	                  	<button id="exportCSV" onclick="exportToCSV();" style="margin-top: 10px;">Exportar a CSV</button>
+	                </div>
+                </div>               
+            </div>        	
+            <div class="col">
+                <form id="tratamientos">
+                    <fieldset>
+                        <legend>Tratamientos</legend>
+                        <fieldset id="tratamientos-farma">
+                            <legend>Tratamientos Farmacológicos</legend>
+                            <div class="btn">
+                                <button id="btn-mup" onclick="goMUP(event)">ACCESO AL MUP</button>
+                            </div>
+                            <span>Tratamiento - Recomendaciones</span>
+                            <textarea id="txt-trat-reco" style="margin-bottom: 8px" spellcheck="false"></textarea>
+                            
+                            <span>Resultado</span>
+                            <textarea id="txt-mup" cols="20" spellcheck="false"></textarea>
+                        </fieldset>
+                        <fieldset id="tratamientos-psi" class="tri-col">
+                            <legend>Tratamientos Psicológicos</legend>
+                            <div>
+                                <div class="titulo-seccion">
+                                    <span>TIPO DE TRATAMIENTO</span>
+                                    <span>NÚMERO DE SESIONES</span>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset id="cont-cuidados">
+                            <legend>Programa de Continuidad de Cuidados</legend>
+                            <div class="checks">
+                                <div>
+                                    <input type="checkbox" id="cb-cont-cuidados">
+                                    <label for="cb-cont-cuidados">Incluido en el programa de continuidad de cuidados</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                </form>
+                <form id="prog-unid">
+                    <fieldset>
+                        <legend>Programas / Unidades Proceso</legend>
+                    </fieldset>
+                    <fieldset id="prog-joven">
+                        <legend>Programa Joven</legend>
+                        <div class="checks">
+                            <div>
+                                <input type="checkbox" id="cb-prog-joven">
+                                <label for="cb-prog-joven">Incluido en el programa joven</label>
+                            </div>
+                        </div>
+	                    <div style="display: block; margin: 12px 0 0 0;" id="fechas-pj-container">
+	                        <div>
+	                            <label for="fec-pj-inicio">Fecha de Inicio:</label>
+	                            <div>
+	                                <label class="calIcon" for="fec-pj-inicio">📅</label>
+	                                <input class="calendar" id="fec-pj-inicio" type="text"> <!-- readonly-->
+	                                <label class="clean">❌</label>
+	                            </div>
+	                        </div>
+	                        <div>
+	                            <label for="fec-pj-fin">Fecha de Finalización:</label>
+	                            <div>
+	                                <label class="calIcon" for="fec-pj-fin">📅</label>
+	                                <input class="calendar" id="fec-pj-fin" type="text"> <!-- readonly-->
+	                                <label class="clean">❌</label>
+	                            </div>
+	                        </div>
+	                    </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div id="cal">
+                <table id="calendario">
+                    <thead>
+                        <tr>
+                            <th onclick="previousYear()">&lt;&lt;</th>
+                            <th onclick="previousMonth()">&lt;</th>
+                            <th colspan="3" onclick="selectMY()"><span id="calMes"></span> <span id="calAnio"></span></th>
+                            <th onclick="nextMonth()">&gt;</th>
+                            <th onclick="nextYear()">&gt;&gt;</th>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <th>L</th>
+                            <th>M</th>
+                            <th>X</th>
+                            <th>J</th>
+                            <th>V</th>
+                            <th>S</th>
+                            <th>D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="tooltip-container">
+            	<span id="tooltip-text">TEST DE TOOLTIP PARA DIAGNOSTICOS</span>
+            </div>
+        	
+        </main>
+        
+        <!--script>
+        function goMUP() {
+        	var win = window.open("https://mup.salud.madrid.org/", '_blank');
+            // Cambiar el foco al nuevo tab (punto opcional)
+            win.focus();       	
+        }
+        </script-->
+
+		<script type="application/javascript" src="js/registro.js"></script>	
+		<script type="application/javascript" src="js/calendar.js"></script>	
+		<script type="application/javascript" src="js/inputFields.js"></script>	
+        
+	</body>
+</html>

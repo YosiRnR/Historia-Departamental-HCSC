@@ -1,0 +1,179 @@
+.btn > button {
+    font-weight: bold;
+    padding: 7px;
+    border: 1px solid #369acc;
+    background-color: white;
+    box-shadow: 5px 5px 5px gray;
+}
+
+.btn button:hover {
+    background-color: #369acc;
+    color: white;
+    cursor: pointer;
+}
+
+.btn button:active {
+    background-color: #e53832;
+    border: 1px solid #e53832;
+}
+
+.btn button:focus {
+    outline: 0;
+}
+
+.citas-atendidas {
+	background-color: yellow !important;
+}
+/*#tabla table {
+	margin-top: 20px;
+    border: 2px solid darkblue;
+}*/
+#tabla table td {
+    text-align: center;
+}
+table button {
+	width: 70px;
+}
+/*#tabla table tr th {
+    background-color: #CAE3F0;
+}*/
+#tabla table tr:nth-child(even) {
+    background-color: #F7E2E1;
+}        
+
+#table-citas_wrapper select, input {
+	display: inline;
+	width: auto;
+}    
+
+#table-citas_wrapper label {
+	width: auto;
+}
+
+.atendida {
+	background: #A8F3FE !important;
+}    
+
+.paciente-no-encontrado {
+	background: #FF0000 !important;
+	pointer-events: none;
+	font-weight: bold;
+}    
+
+/*------------------CALENDARIO-------------------*/
+#cal {
+	display: none;
+	z-index: 20;
+	position: absolute;
+	top: 7px;
+	right: 3px;
+}
+
+#calendario {
+	font-size: 0.7rem;
+	border: 1px solid #369acc;
+	border-radius: 5px;
+	border-spacing: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin: 20px auto;
+	background-color: white;
+}
+
+#calendario thead *, #tablaMes * {
+	text-decoration: none !important;
+}
+
+#calMes, #calAnio {
+	font-size: 0.7rem;
+}
+
+#calendario th, #cal td {
+	width: 40px;
+	text-align: center;
+	padding: 3px;
+	text-transform: uppercase;
+}
+
+#calendario thead tr:last-child th {
+	font-weight: bold;
+	border-bottom: 1px solid #369acc;
+	background-color: #d4e0e7;
+}
+
+#calendario thead tr:nth-child(2) {
+	height: 10px;
+}
+
+.diaGris {
+	color: gray;
+}
+
+#calendario thead tr:first-child th:hover, #calendario td:hover,
+	.selectDia {
+	background-color: #369acc !important;
+	color: white;
+	cursor: pointer;
+}
+
+.calendar {
+	width: 100% !important;
+	padding-left: 32px;
+	padding-right: 32px;
+}
+
+#tablaMes {
+	display: none;
+	position: absolute;
+	top: 27px;
+	padding: 0 5px 5px;
+	border: 1px solid #369acc;
+	background-color: white;
+	font-size: 0.6rem;
+	width: 80%;
+	margin: auto;
+	left: 30px;
+	box-shadow: 2px 2px 2px #369acc;
+	border-spacing: 0;
+	border-radius: 5px;
+}
+
+#tablaMes thead, #tablaMes tbody {
+	margin: auto;
+}
+
+#tablaMes th {
+	font-size: 0.7rem;
+	width: 25%;
+}
+
+#tablaMes td {
+	border: 1px solid #369acc;
+	background-color: white;
+	padding: 12px 2px;
+	width: 25% !important;
+}
+
+#tablaMes td:hover {
+	background-color: #369acc;
+	color: white;
+	cursor: pointer;
+}
+
+#inputAnio {
+	height: 28px !important;
+	width: 30%;
+	margin: 3px 0;
+}
+
+#btnAnio {
+	border: 1px solid #369acc;
+	background-color: #369acc;
+	height: 28px;
+	padding: 0 10px;
+}
+
+#btnAnio:hover {
+	color: #369acc;
+	background-color: white !important;
+}

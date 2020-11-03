@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<web-app id="Historia-Departamental-HCSC_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <display-name>Historia Departamental HCSC</display-name>
+  
+  <welcome-file-list>
+	<welcome-file>login.html</welcome-file>
+  </welcome-file-list>
+	
+  <context-param>
+	<param-name>log4j-config-location</param-name>
+    <param-value>WEB-INF/log4j.properties</param-value>
+  </context-param>
+
+  <servlet>
+  	<servlet-name>ViewActuaciones</servlet-name>
+  	<display-name>ViewActuaciones</display-name>
+  	<description></description>
+  	<servlet-class>org.hcsc.views.ViewActuaciones</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>ViewInputFields</servlet-name>
+  	<display-name>ViewInputFields</display-name>
+  	<description></description>
+  	<servlet-class>org.hcsc.views.ViewInputFields</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>InitLogger</servlet-name>
+  	<display-name>InitLogger</display-name>
+  	<description></description>
+  	<servlet-class>org.hcsc.views.InitLogger</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>ViewActuaciones</servlet-name>
+  	<url-pattern>/actuaciones</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ViewInputFields</servlet-name>
+  	<url-pattern>/inputFields</url-pattern>
+  </servlet-mapping>
+  
+</web-app>

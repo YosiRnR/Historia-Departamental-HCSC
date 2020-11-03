@@ -1,0 +1,868 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    
+    font-family: Arial, sans-serif
+}
+
+html, body {
+    height: 100%;
+}
+
+input[type=text]::-ms-clear {
+    display: none;
+}
+
+/*------------------CALENDARIO-------------------*/
+#cal {
+    display: none;
+    z-index: 20;
+    position: absolute;
+    top: 7px;
+    right: 3px;
+}
+
+#calendario {
+    font-size: 0.7rem;
+    border: 1px solid #369acc;
+    border-radius: 5px;
+    border-spacing: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 20px auto;
+    background-color: white;
+    
+}
+
+#calendario thead *, #tablaMes *{
+    text-decoration: none !important;
+}
+
+#calMes, #calAnio {
+    font-size: 0.7rem;
+}
+
+#calendario th, #cal td {
+    width: 40px;
+    text-align: center;
+    padding: 3px;
+    text-transform: uppercase;
+}
+
+#calendario thead tr:last-child th {
+    font-weight: bold;
+    border-bottom: 1px solid #369acc;
+    background-color: #d4e0e7;
+}
+
+#calendario thead tr:nth-child(2) {
+    height: 10px;
+}
+
+.diaGris {
+    color: gray;
+}
+
+#calendario thead tr:first-child th:hover, #calendario td:hover, .selectDia {
+    background-color: #369acc !important;
+    color: white;
+    cursor: pointer;
+}
+
+.calendar {
+    width: 100% !important;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+#tablaMes {
+    display: none;
+    position: absolute;
+    top: 27px;
+    padding: 0 5px 5px;
+    border: 1px solid #369acc;
+    background-color: white;
+    font-size: 0.6rem;
+    width: 95%;
+    margin: auto;
+    left: 8px;
+    box-shadow: 2px 2px 2px #369acc;
+    border-spacing: 0;
+    border-radius: 5px;
+}
+
+#tablaMes th{
+    font-size: 0.7rem
+}
+
+#tablaMes td{
+    border: 1px solid #369acc;
+    background-color: white;
+    padding: 12px 2px;
+    width: 25%;
+}
+
+#tablaMes td:hover{
+    background-color: #369acc;
+    color: white;
+    cursor: pointer;
+}
+
+#inputAnio {
+    width: 30%;
+}
+
+#btnAnio {
+    border: 1px solid #369acc;
+    background-color: #369acc;
+    height: 28px;
+    padding: 0 10px;
+}
+
+#btnAnio:hover {
+    color: #369acc;
+    background-color: white !important;
+}
+
+/*------------------LOADER-----------------------*/
+#fondo-loader {
+    display: none;
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/*------------------CABECERA-----------------------*/
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+#logo, #fecha {
+    width: 30%;
+}
+
+#logo img {
+    max-width: calc(100%);
+    min-width: 260px;
+}
+
+#title {
+    text-align: center;
+    width: 40%;
+}
+
+h1 {
+    padding: 0 15px;
+}
+
+#filtro span{
+    margin-left: 20px;
+}
+
+#filtro button {
+    width: 170px;
+}
+
+/*-------------------FIN CABECERA-------------------*/
+
+/*-------------------BOTONES------------------------*/
+.btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn button {
+    font-weight: bold;
+    padding: 7px;
+    border: 1px solid #369acc;
+    background-color: white;
+    box-shadow: 5px 5px 5px gray
+}
+
+.btn button:disabled {
+    color: gray;
+    background-color: lightblue;/*lightgray;*/
+    box-shadow: 5px 5px 5px gray
+}
+
+.btn button:not(:disabled):hover {
+    background-color: #369acc;
+    color: white;
+    cursor: pointer;
+}
+
+.btn button:not(:disabled):active {
+    background-color: #e53832;
+    border: 1px solid #e53832;
+}
+
+.btn button:focus {
+    outline: 0;
+}
+/*-------------------FIN BOTONES--------------------*/
+
+
+/*-------------------FORMULARIOS--------------------*/
+main {
+    display: flex;
+    padding-top: 20px;
+    margin-bottom: 50px;
+}
+
+.col {
+    flex: 3;
+}
+
+.col > fieldset {
+    position: relative;
+}
+
+.col:nth-child(2) {
+    flex: 4;
+}
+
+form {
+    width: 90%;
+    margin: 0 auto;
+}
+
+fieldset {
+    padding: 30px 20px 20px;
+    border: 2px solid #369acc;
+}
+
+form fieldset {
+    margin-top: 20px;
+}
+
+legend {
+    padding: 0 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+fieldset > div {
+    display: flex;
+    align-items: center;
+}
+
+fieldset > div:not(:last-child), #fechas-pj-container > div:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+#fechas-pj-container > div {
+	display: flex;
+	justify-content: center;
+}
+
+#fechas-pj-container > div > label {
+	flex: 7;
+}
+
+#fechas-pj-container > div > div {
+	flex: 4;
+}
+
+fieldset > div div{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    
+}
+
+.col:nth-child(2) form {
+    width: 100%;
+}
+
+.col > fieldset:not(:first-child) {
+    margin-top: 25px;
+}
+
+.col:nth-child(2) {
+    margin-top: 20px;
+}
+
+#diag-psi-prin {
+    margin-top: -25px;
+}
+
+#tratamientos-farma {
+    margin-top: 0;
+}
+
+#tratamientos-psi input[type=checkbox] ~ label {
+	margin-left: 3px;
+}
+
+label, #sel-dni {
+    display: block;
+    width: 35%;
+    padding-right: 10px;
+    font-size: 0.9rem;
+}
+
+div:not(.titulo-seccion) > span, .sub-title {
+    font-size: 0.9rem;
+}
+
+.titulo-seccion {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 1rem !important;
+    text-align: center;
+}
+
+select:hover {
+    border: 1px solid #369acc;
+    background-color: #369acc;
+    color: white;
+}
+
+select:focus {
+    outline: 0;
+}
+
+option {
+    background-color: white;
+    color: black;
+}
+
+input, select:not(#sel-dni) {
+    width: 65%;
+    padding: 5px;
+    border: 1px solid #369acc;
+}
+
+#sel-dni {
+    padding: 5px;
+    border: 1px solid #369acc;
+}
+
+input:focus {
+    outline: 0;
+}
+
+.enlace {
+    position: relative;
+    text-align: right;
+    display: block;
+}
+
+.enlace-seccion {
+    margin-top: -30px;
+}
+
+.enlace2 {
+    position: relative;
+    text-align: right;
+    display: block;
+    margin-left: 50px;
+}
+
+#label-fec-mod {
+    text-align: left;
+    width: auto;
+}
+
+#fec-mod {
+    width: 60% !important;
+}
+
+.fs-hidden {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+#lugar-ate {
+	width: 100%;
+}
+
+:not(#alta) > .tri-col div div {
+    display: flex;
+    align-items: center;
+}
+
+:not(#alta) > .tri-col > div > div > * {
+    flex: 10;
+}
+
+#prog-unid .tri-col > div > div > div {
+    flex: 5;
+}
+
+:not(#alta) > .tri-col div > span {
+    flex: 7;
+}
+
+:not(#alta) > .tri-col div > label {
+    flex: 10;
+}
+
+:not(#alta) > .tri-col div div > .enlace {
+    flex: 8;
+}
+
+:not(#alta) > .tri-col div div > input {
+    flex: 3;
+}
+
+:not(#alta) > .tri-col div div > input[type=checkbox] {
+    flex: 0.7;
+}
+
+#alta [type=checkbox]{
+    flex: 1;
+    margin-left: -5px;
+}
+
+#alta label{
+    flex: 5.5;
+}
+
+#alta .calDiv{
+    flex: 13;
+    margin-left: 5px;
+}
+
+#discapacidad-das fieldset > div {
+    margin-left: -20px;
+}
+
+#discapacidad-das div div > *, #sit-clin div div > * {
+    margin: 0 5px;
+    padding-left: 10px;
+}
+
+.sub-title {
+    margin-bottom: 25px;
+}
+
+#form-estadiaje select, #form-estadiaje input {
+    margin-left: -12px;
+}
+
+.checks {
+    width: 100%;
+    display: inline;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 0;
+    padding-top: 20px;
+}
+
+.checks .tri {
+    width: 33%;
+    float: left;
+}
+
+.checks .tri label{
+    height: auto;
+}
+
+.checks input {
+    width: auto;
+}
+
+.checks label {
+    text-align: left;
+    width: auto;
+    margin-left: 5px;
+}
+
+#txt-mup {
+    width: 100%;
+    resize: none;
+    border: 1px solid #369acc;
+    height: 250px;
+    padding: 5px;
+}
+textarea {
+    width: 100%;
+    resize: none;
+    border: 1px solid #369acc;
+    height: 150px;
+    padding: 5px;
+}
+
+#cont-cuidados label, #prog-joven label{
+    display: inline;
+}
+
+.desplegable{
+    position: relative;
+    width: 100%;
+}
+
+.desplegable input{
+    width: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.lupa, .calIcon{
+    width: auto;
+    position: absolute;
+    left: 5px;
+    top: 6px;
+}
+
+.clean{
+    width: auto;
+    position: absolute;
+    right: -5px;
+    top: 6px;
+    display: none;
+}
+    
+.desplegable ul{
+    display: none;
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    top: 27px;
+    list-style: none;
+    width: 500px;
+    background-color: white;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.desplegable li {
+    border: 1px solid #369acc;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    background-color: #daedf7;
+}
+
+.desplegable li:hover {
+    background-color: #369acc;
+    color: white;
+    border: 1px solid #369acc;
+}
+
+main div div {
+    position: relative;
+}
+
+select, input, fieldset > div >label {
+    height: 28px;
+}
+
+.calIcon, .clean, .lupa {
+    margin-top: -1px;
+    padding-top: -1px;
+}
+
+input[type=checkbox] {
+    height: auto;
+}
+
+.col:nth-child(2) > fieldset:nth-child(1) input[type=number]{
+    width: 80px;
+    margin-right: 16px
+}
+
+hr {
+	margin: -8px 0 8px;
+}
+
+/*-------------------FIN FORMULARIOS---------------*/
+
+
+/*-------------------TABLAS------------------------*/
+table {
+    width: 100%;
+    border-spacing: 0;
+    border: 0;
+}
+
+table tr > * {
+    padding: 6px;
+    text-align: left;
+}
+
+table:not(#calendario) tr th {
+    text-decoration: underline;
+    text-align: center;
+}
+
+td div {
+    padding: 5px 0;
+}
+
+td div{
+    display: flex;
+}
+
+td input, td label {
+    width: auto;
+    margin-left: 5px;
+}
+
+td input[type=text] {
+    width: 135px !important;
+}
+
+td:last-child div {
+    justify-content: center;
+}
+
+/*-------------------FIN TABLAS--------------------*/
+
+
+
+/* Msg-Box background (gray background) */
+#msg-box-background {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 300px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+#msg-box-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+#msg-box-title-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  background-color: #e53832;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+#msg-box-close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 38px;
+  font-weight: bold;
+  margin: -13px 1px;
+}
+
+#msg-box-close:hover,
+#msg-box-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#close:hover,
+#close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-msgbox {
+	color: #e53832;
+	padding: 8px 15px;
+	background: transparent;
+	border: 0.15rem solid #e53832;
+	font-size: 0.85rem;
+	transition: all 0.15s linear;
+	font-weight: bold;
+}
+
+.btn-msgbox:hover {	
+	color: white;
+	background: #369acc;
+	border: 0.15rem solid #369acc;
+	border-radius: 0.5rem;
+	font-weight: bold;
+}
+
+
+#tooltip-container {
+ 	position: absolute;
+ 	z-index: 1;
+ 	display: none;
+ 	pointer-events: none;
+}
+
+#tooltip-text {
+	background-color: black;
+	color: #fff;
+	width: auto;
+	padding: 12px 10px;
+	border-radius: 10px;
+	position: relative;
+	line-height: 25px;
+}
+
+#tooltip-container #tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+
+
+@media (max-width:1200px) {
+    
+    input[type=date] {
+        width: 65%;
+    }
+}
+
+@media (max-width:1100px) {
+/*------------------CABECERA-----------------------*/
+    header {
+        display: block;
+    }
+    
+    #logo {
+        width: 100%;
+    }
+    
+    #logo img {
+        width: 1000%;
+    }
+    
+    #title {
+        width: 100%;
+        padding-bottom: 25px;
+    }
+    
+    #fecha {
+        width: 98%;
+        display: inline-block;
+        margin: 5px;
+    }
+    
+    #fecha div {
+        display: inline;
+    }
+    
+    #fecha fieldset > div{
+        margin: 20px auto 0;
+    }
+    
+    #fecha fieldset > div:nth-child(n+3){
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70%;
+    }
+/*-------------------FIN CABECERA-------------------*/
+    
+/*------------------FORMULARIOS---------------------*/
+    main  {
+        display: block;
+    }
+    
+    .col {
+        display: block;
+        margin: 5px;
+    }
+    
+    .col:nth-child(2) select {
+        margin-top: 5px;
+    }
+    
+    form {
+        width: 100%;
+    }
+    
+    fieldset {
+        padding: 10px;
+        border: 2px solid #369acc;
+    }
+    
+    fieldset > div:not(:last-child) {
+        margin: 0;
+    }
+    
+    form fieldset > div {
+        display: flex;
+        width: 100%;
+    }
+    
+    form div div{
+        margin-bottom: 5px;
+    }
+    
+    #eq-calle {
+        justify-content: flex-start;
+    }
+    
+    .enlace {
+        margin-top: auto;
+    }
+    
+    .checks .tri {
+        float: none;
+        width: 100%;
+        padding-bottom: 10px;
+        padding-left: 10px;
+    }
+    
+    .col:nth-child(2) input[type=number]{
+        flex: none;
+        width: 80px !important;
+        margin-right: 16px;
+    }
+/*------------------FIN FORMULARIOS-----------------*/
+}
