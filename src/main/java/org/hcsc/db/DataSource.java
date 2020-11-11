@@ -13,14 +13,14 @@ public class DataSource {
 	private static HikariConfig config = new HikariConfig();
 	private static HikariDataSource dataSource;
 	
-	private static final String dataBaseUrl =
-								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatria;"
-									+ "instance=SQLEXPRESS01;"
-									+ "user=sa;password=Root1001;charset=iso_1";	
 //	private static final String dataBaseUrl =
-//								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatriaDevelop;"
+//								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatria;"
 //									+ "instance=SQLEXPRESS01;"
 //									+ "user=sa;password=Root1001;charset=iso_1";	
+	private static final String dataBaseUrl =
+								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatriaDevelop;"
+									+ "instance=SQLEXPRESS01;"
+									+ "user=sa;password=Root1001;charset=iso_1";	
 	
 	static {
 		config.setDriverClassName("net.sourceforge.jtds.jdbc.Driver");
@@ -29,6 +29,7 @@ public class DataSource {
         config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
         config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
         config.setConnectionTestQuery("SELECT GETDATE()");
+//        config.setLeakDetectionThreshold(60 * 5 * 1000);
         try {
         	dataSource = new HikariDataSource( config );
         }

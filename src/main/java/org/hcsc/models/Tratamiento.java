@@ -25,8 +25,8 @@ public class Tratamiento {
 		csvRow.add(Integer.toString(idActuacion));
 		csvRow.add(Integer.toString(posicion));
 		csvRow.add(valor);
-		csvRow.add(sdf.format(fechaInicio));
-		csvRow.add(sdf.format(fechaFin));
+		csvRow.add(fechaInicio == null ? "" : sdf.format(fechaInicio));
+		csvRow.add(fechaFin == null ? "" : sdf.format(fechaFin));
 		
 		return csvRow;
 	}

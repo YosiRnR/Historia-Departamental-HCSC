@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hcsc.exceptions.HSCException;
@@ -172,10 +174,22 @@ public class DAOProgsUnidsEspProcs {
 		
 		String query = "SELECT * FROM ProgsUnidsEspProcs";
 		
+		String queryIF = "SELECT Label, Posicion FROM InputFields WHERE Seccion = 'PUEP'";
+		
 		try {
 			stmt = connection.prepareStatement(query);
 			
 			ResultSet rs = stmt.executeQuery();
+			
+			stmt = connection.prepareStatement(queryIF);
+			
+			ResultSet rsIF = stmt.executeQuery();
+			
+			Map<Integer, String> puepMap = new HashMap<Integer, String>();
+			
+			while(rsIF.next()) {
+				puepMap.put(rsIF.getInt("Posicion"), rsIF.getString("Label"));
+			}
 			
 			while(rs.next()) {
 				ProgsUnidsEspProcs puep = new ProgsUnidsEspProcs();
@@ -184,6 +198,7 @@ public class DAOProgsUnidsEspProcs {
 				puep.setIdActuacion                (rs.getInt   ("IdActuacion"));
 				puep.setPosicion                   (rs.getInt   ("Posicion"));
 				puep.setValor                      (rs.getString("Valor"));
+				puep.setCsvDescripcion             (puepMap.get(rs.getInt("Posicion")));
 				
 				progUnidsProcsList.add(puep);
 			}

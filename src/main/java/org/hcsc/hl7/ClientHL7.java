@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import com.google.gson.JsonObject;
@@ -162,39 +162,39 @@ public class ClientHL7 {
 		try {
 			Message qryMessage = parser.parse(qryString);
 			
-			connection = context.newClient(this.domain, this.port, this.useTLS);
+			if (connection == null) {
+				connection = context.newClient(this.domain, this.port, this.useTLS);
+			}
 			Initiator initiator = connection.getInitiator();
-			//initiator.setTimeout(30, TimeUnit.SECONDS);
+//			initiator.setTimeout(30, TimeUnit.SECONDS);
 			
-			Message responseMessage = null;
+			/** Send QRY^A19 message for Patient Demographics and wait for response.
+			 **/
+			Message responseMessage = initiator.sendAndReceive(qryMessage);
+			//responseMessage.generateACK();
 			
-			try {
-				/** Send QRY^A19 message for Patient Demographics and wait for response.
-				 **/
-				responseMessage = initiator.sendAndReceive(qryMessage);
-				responseMessage.generateACK();
-				
-				pacientes = getPatientsResultFromQRYA19(parser.encode(responseMessage));
-			}
-			catch (LLPException e) {
-				Logger.getLogger(ClientHL7.class).info("LLPException: StackTrace: ", e);
-			}
-			catch (IOException e) {
-				Logger.getLogger(ClientHL7.class).info("IOException: StackTrace: ", e);
-			}
-			
+			pacientes = getPatientsResultFromQRYA19(parser.encode(responseMessage));
 		}
-		catch (HL7Exception e1) {
-			Logger.getLogger(ClientHL7.class).info("HL7Exception: StackTrace: ", e1);
+		catch (LLPException e) {
+			Logger.getLogger(ClientHL7.class).error("LLPException: StackTrace: ", e);
+		}
+		catch (IOException e) {
+			Logger.getLogger(ClientHL7.class).error("IOException: StackTrace: ", e);
+		}
+		catch (HL7Exception e) {
+			Logger.getLogger(ClientHL7.class).error("HL7Exception: StackTrace: ", e);
 		}
 		finally {
-			if (connection != null && connection.isOpen())
+			if (connection != null && connection.isOpen()) {
 				connection.close();
+				connection = null;
+			}
 			try {
 				context.close();
+				context = null;
 			}
 			catch (IOException e) {
-				Logger.getLogger(ClientHL7.class).info("IOExceptio: StackTrace: ", e);
+				Logger.getLogger(ClientHL7.class).error("IOExceptio: StackTrace: ", e);
 			}
 		}
 		
@@ -323,7 +323,7 @@ public class ClientHL7 {
 				}
 				paciente.setDireccion(direccion);
 				paciente.setPoblacion(poblacion);
-				paciente.setCodigoPostal(Integer.parseInt(codPostal));
+				paciente.setCodigoPostal((codPostal.isEmpty() || codPostal.equalsIgnoreCase("null")) ? -1 : Integer.parseInt(codPostal));
 				paciente.setTelefono1(telefono1);
 				paciente.setTelefono2(telefono2);
 				paciente.setFamiliar(familiar);
@@ -358,6 +358,9 @@ public class ClientHL7 {
 	public void sendMDM_T02(ByteArrayOutputStream pdfStream, JsonObject jsonData, int codigoFacultativo,
 								String apellidosFacultativo, String nombreFacultativo) {
 		
+		HapiContext context   = null;
+		Connection connection = null;
+		
 		Logger.getLogger(ClientHL7.class).info("Preparando informe para enviar vía HL7...");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String currentDate   = sdf.format(new java.util.Date());
@@ -377,9 +380,6 @@ public class ClientHL7 {
 			Logger.getLogger(ClientHL7.class).info("ParseException: StackTrace: ", e1);
 		}
 		Logger.getLogger(ClientHL7.class).info("Fechas formateadas para el mensaje MDM_T02 HL7...");
-		
-		Connection connection = null;		
-		HapiContext context   = new DefaultHapiContext();
 		
 		String base64Pdf = "";
 		try {			
@@ -433,48 +433,82 @@ public class ClientHL7 {
 					+ "TXA|1|INFORME " + prestacion + "|PDF||||||||||||||AU\r"
 					+ "OBX|1|ED|^^^^||^^PDF^BASE64^" + base64Pdf;
 						
-			Logger.getLogger(ClientHL7.class).info("Mensaje HL7 para enviar: ");
-			Logger.getLogger(ClientHL7.class).info(msgString);
-			MinLowerLayerProtocol mllp = new MinLowerLayerProtocol();
-			mllp.setCharset("ISO-8859-1");
-			context.setLowerLayerProtocol(mllp);
+//			Logger.getLogger(ClientHL7.class).info("Mensaje HL7 para enviar: ");
+//			Logger.getLogger(ClientHL7.class).info(msgString);
 			
-			Parser parser         = context.getPipeParser();
-			Message reportMessage = parser.parse(msgString);
-			
-			connection = context.newClient(this.domain, this.port, this.useTLS);
-			
-			Initiator initiator = connection.getInitiator();
-			initiator.setTimeout(30, TimeUnit.SECONDS);
-
-			Logger.getLogger(ClientHL7.class).info("ENVIANDO INFORME HL7 (usuario: " + codigoFacultativo + ")...");
-			Message response = initiator.sendAndReceive(reportMessage);
-			response.generateACK();
-			Logger.getLogger(ClientHL7.class).info("ENVIO INFORME HL7 ACK:\n " + parser.encode(response));
+			int count    = 0;
+			int maxTries = 5;
+			while(count < maxTries) {
+				try {
+					Parser parser   = null;
+					Message reportMessage = null;
+					if (context == null) {
+						context = new DefaultHapiContext();
+						
+						MinLowerLayerProtocol mllp = new MinLowerLayerProtocol();
+						mllp.setCharset("ISO-8859-1");
+						context.setLowerLayerProtocol(mllp);
+						
+						parser        = context.getPipeParser();
+						reportMessage = parser.parse(msgString);
+					}
+					if (connection == null) {
+						connection = context.newClient(this.domain, this.port, this.useTLS);
+					}
+					
+					Initiator initiator = connection.getInitiator();
+//					initiator.setTimeout(30, TimeUnit.SECONDS);
+		
+					Logger.getLogger(ClientHL7.class)
+						.warn("ENVIANDO INFORME HL7 (usuario: " + codigoFacultativo + ")... INTENTO " + count);
+					Message response = initiator.sendAndReceive(reportMessage);
+					count = maxTries;
+					//response.generateACK();
+					Logger.getLogger(ClientHL7.class).warn("ENVIO INFORME HL7 ACK:\n " + parser.encode(response));
+				}
+				catch(HL7Exception e) {
+					Logger.getLogger(ClientHL7.class).error("MDM_T02 TIMEOUT!!\n ", e);
+					if (++count >= maxTries) throw e;
+					if (connection != null) {
+						connection.close();
+						connection = null;
+					}
+					if (context != null) {
+						context.close();
+						context = null;
+					}
+				}
+			}
 		}
 		catch(IOException e) {
-			Logger.getLogger(ClientHL7.class).info("IOException: StackTrace: ", e);
+			Logger.getLogger(ClientHL7.class).error("IOException: StackTrace: ", e);
 		}
 		catch(HL7Exception e) {
-			Logger.getLogger(ClientHL7.class).info("HL7Exception: StackTrace: ", e);
+			Logger.getLogger(ClientHL7.class).error("HL7Exception: StackTrace: ", e);
 		}
 		catch(LLPException e) {
-			Logger.getLogger(ClientHL7.class).info("LLPException: StackTrace: ", e);
+			Logger.getLogger(ClientHL7.class).error("LLPException: StackTrace: ", e);
 		}
 		catch(RuntimeException e) {
-			Logger.getLogger(ClientHL7.class).info("RuntimeException: StackTrace: ", e);			
+			Logger.getLogger(ClientHL7.class).error("RuntimeException: StackTrace: ", e);			
 		}
 		catch(Exception e) {
-			Logger.getLogger(ClientHL7.class).info("Exception: StackTrace: ", e);			
+			Logger.getLogger(ClientHL7.class).error("Exception: StackTrace: ", e);			
 		}
 		finally {
 			if (connection != null && connection.isOpen())
+				Logger.getLogger(ClientHL7.class).warn("Closing ClientHL7 connection...");
 				connection.close();
+				connection = null;
+				Logger.getLogger(ClientHL7.class).warn("ClientHL7 connection closed!");
 			try {
+				Logger.getLogger(ClientHL7.class).warn("Closing HAPI context...");
 				context.close();
+				context = null;
+				Logger.getLogger(ClientHL7.class).warn("HAPI context closed!");
 			}
 			catch (IOException e) {
-				Logger.getLogger(ClientHL7.class).info("IOException: StackTrace: ", e);
+				Logger.getLogger(ClientHL7.class).warn("IOException: StackTrace: ", e);
 			}
 		}
 	}

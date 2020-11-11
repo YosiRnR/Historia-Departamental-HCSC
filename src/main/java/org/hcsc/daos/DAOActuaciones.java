@@ -436,7 +436,7 @@ public class DAOActuaciones {
 			while(rs.next()) {
 				Actuacion actuacion = new Actuacion();
 				actuacion.setIdActuacion(rs.getInt("IdActuacion"));
-				actuacion.setIdActuacion(rs.getInt("IdPaciente"));
+				actuacion.setIdPaciente(rs.getInt("IdPaciente"));
 				actuacion.setNumRegistro(rs.getInt("NumRegistro"));
 				actuacion.setFecha(rs.getDate("Fecha"));
 				actuacion.setIncapacidadTotal(rs.getInt("IncapacidadTotal") > 0 ? true : false);

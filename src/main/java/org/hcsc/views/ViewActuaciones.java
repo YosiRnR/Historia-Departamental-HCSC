@@ -114,7 +114,10 @@ public class ViewActuaciones extends HttpServlet {
 		try {
 		switch(code) {
 		case RQ_CERRAR_SESION: {
+			String user = request.getParameter("id-facultativo");
 			deleteSessionCookie(response);
+			Logger.getLogger(ViewActuaciones.class)
+							.info("Usuario " + user + " ha finalizado la sesion" );
 			response.getWriter().print("{ state: SESSION CLOSED }");
 			break;
 		}
@@ -303,8 +306,8 @@ public class ViewActuaciones extends HttpServlet {
 			Logger.getLogger(ViewActuaciones.class).info("Procesando " + debugRequestStrings.get(code)
 												+ " Usuario: " + idFacultativo + " (" + fecha + ")");
 			String result = citasCtrl.obtenerCitasPorFacultativo(idFacultativo, idFacultaAlt, fecha).toString();
-			Logger.getLogger(ViewActuaciones.class)
-				.info(debugRequestStrings.get(code) + " resultado: " + result);
+//			Logger.getLogger(ViewActuaciones.class)
+//				.info(debugRequestStrings.get(code) + " resultado: " + result);
 			
 			response.getWriter().print(result);
 			break;
@@ -372,6 +375,7 @@ public class ViewActuaciones extends HttpServlet {
 		}
 		
 		case RQ_EXPORTAR_A_CSV: {
+			//int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
 			ControladorActuacion actuacionCtrl = new ControladorActuacion();
 			byte[] csvZip = actuacionCtrl.exportToCSV();
 			
@@ -396,7 +400,7 @@ public class ViewActuaciones extends HttpServlet {
 			response.getWriter().print("EXCEPTION: " + ex.getCause());
 		}
 		catch(RuntimeException ex) {
-			Logger.getLogger(ViewActuaciones.class).error("Exception message: " + ex.getMessage());
+			Logger.getLogger(ViewActuaciones.class).error("RuntimeException message: " + ex.getMessage());
 			Logger.getLogger(ViewActuaciones.class).error("Exception cause: " + ex.getCause().getMessage());						
 			Logger.getLogger(ViewActuaciones.class).error("RuntimeException: StackTrace: ", ex);
 		}

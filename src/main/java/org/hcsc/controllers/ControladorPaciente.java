@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+//import org.apache.log4j.Logger;
 import org.hcsc.daos.DAOFactory;
 import org.hcsc.exceptions.HSCException;
 import org.hcsc.hl7.ClientHL7;
@@ -63,13 +64,16 @@ public class ControladorPaciente {
 					buscarPorIdSanitario.setNumeroTarjetaSanitaria(toFind.getNumeroTarjetaSanitaria());
 					
 					pacientesHL7 = hl7Client.sendQRY_A19(buscarPorIdSanitario);
+//					Logger.getLogger(ControladorPaciente.class).info(pacientesHL7.get(0).toJson());
 				}
 			
 				Set<String> set = new HashSet<String>();
 				
 				for (Paciente item : pacientes) {
 					String idDocument = "";
-					if (item.getDni() != null && !item.getDni().isEmpty())
+					if (item.getNumeroHistoriaClinica() > 0)
+						idDocument = item.getDni();
+					else if (item.getDni() != null && !item.getDni().isEmpty())
 						idDocument = item.getDni();
 					else if (item.getPasaporte() != null && !item.getPasaporte().isEmpty())
 						idDocument = item.getPasaporte();
@@ -81,15 +85,19 @@ public class ControladorPaciente {
 				
 				for (Paciente item : pacientesHL7) {
 					String idDocument = "";
-					if (item.getDni() != null && !item.getDni().isEmpty())
+					if (item.getNumeroHistoriaClinica() > 0)
+						idDocument = item.getDni();
+					else if (item.getDni() != null && !item.getDni().isEmpty())
 						idDocument = item.getDni();
 					else if (item.getPasaporte() != null && !item.getPasaporte().isEmpty())
 						idDocument = item.getPasaporte();
 					else if (item.getNie() != null && item.getNie().isEmpty())
 						idDocument = item.getNie();
 					
-					set.add(idDocument);
-					pacientes.add(item);
+					if (!set.contains(idDocument)) {
+						set.add(idDocument);
+						pacientes.add(item);
+					}
 				}
 			}
 			

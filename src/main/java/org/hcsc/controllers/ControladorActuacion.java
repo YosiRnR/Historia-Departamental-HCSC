@@ -542,7 +542,7 @@ public class ControladorActuacion {
 		try { 
 			org.hcsc.hl7.GeneradorInformePDF pdfGen = new org.hcsc.hl7.GeneradorInformePDF();
 			pdfStream = pdfGen.generarInformePDF(jsonData, context);
-			Logger.getLogger(ControladorActuacion.class).error("INFORME GENERADO usuario: "
+			Logger.getLogger(ControladorActuacion.class).info("INFORME GENERADO usuario: "
 					+ nombreFacultativo + " " + apellido1Facultativo + " " + apellido2Facultativo
 					+ " (" + codigoFacultativo + ")");
 		}
@@ -602,7 +602,8 @@ public class ControladorActuacion {
 					"fecha", "incapacidadTotal", "curatelaSalud", "curatelaEconomica", "programaContinuidadCuidados",
 					"programaJoven", "fechaInicioProgramaJoven", "fechaFinProgramaJoven",
 					"codigoAgenda", "lugarAtencion", "idProfesional", "tipoPrestacion",
-					"equipoDeCalle", "fechaAlta", "motivoAlta", "numeroCita", "numeroICU", "fechaAltaEquipoCalle");
+					"equipoDeCalle", "fechaAlta", "motivoAlta", "numeroCita", "numeroICU", "fechaAltaEquipoCalle",
+					"medidaProteccion", "residencia");
 			
 			CSVExport.writeLine(writer, actuacionHeader, '\t');
 			
@@ -623,7 +624,7 @@ public class ControladorActuacion {
 			/** DIAGNOSTICOS a CSV
 			 **/
 			java.util.List<String> diagnosticoHeader = java.util.Arrays.asList("idDiagnostico", "idActuacion",
-					"tipoDiagnostico", "cieDiagnostico", "posCombo");
+					"tipoDiagnostico", "cieDiagnostico", "posCombo", "TipoDiagnostico");
 			
 			CSVExport.writeLine(writer, diagnosticoHeader, '\t');
 			
@@ -644,7 +645,7 @@ public class ControladorActuacion {
 			/** TRATAMIENTOS a CSV
 			 **/
 			java.util.List<String> tratamientosHeader = java.util.Arrays.asList("idTratamiento", "idActuacion",
-					"tipoDiagnostico", "cieDiagnostico", "posCombo");
+					"Posicion", "Valor", "FechaInicio", "FechaFin");
 			
 			CSVExport.writeLine(writer, tratamientosHeader, '\t');
 			
@@ -685,8 +686,8 @@ public class ControladorActuacion {
 			
 			/** SITUACIÓN CLÍNICA FUNCIONAL a CSV
 			 **/
-			java.util.List<String> sitClinicaDASHeader = java.util.Arrays.asList("idDiagnostico", "idActuacion",
-					"tipoDiagnostico", "cieDiagnostico", "posCombo");
+			java.util.List<String> sitClinicaDASHeader = java.util.Arrays.asList("idSitClinicaDAS", "idActuacion",
+					"Posicion", "Valor", "TipoSCFDAS", "NombreCampoSCFDAS");
 			
 			CSVExport.writeLine(writer, sitClinicaDASHeader, '\t');
 			
@@ -706,8 +707,8 @@ public class ControladorActuacion {
 			
 			/** PROGRAMAS, UNIDADES ESPECIALES y PROCESOS a CSV
 			 **/
-			java.util.List<String> progsUnidsEspProcsHeader = java.util.Arrays.asList("idDiagnostico", "idActuacion",
-					"tipoDiagnostico", "cieDiagnostico", "posCombo");
+			java.util.List<String> progsUnidsEspProcsHeader = java.util.Arrays.asList("idDProgramasUnidadesProcesos", "idActuacion",
+					"Posicion", "Valor", "NombrePrograma");
 			
 			CSVExport.writeLine(writer, progsUnidsEspProcsHeader, '\t');
 			

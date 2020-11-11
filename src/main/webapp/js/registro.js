@@ -17,8 +17,9 @@ const RQ_OBTENER_PACIENTE_DEL_HOSPITAL  = 21;
 const RQ_OBTENER_DATOS_AGENDA           = 22;
 const RQ_MARCAR_CITA_ATENDIDA           = 23;
 const RQ_ENVIAR_INFORME_HL7             = 24;
-const RQ_EXPORTAR_A_CSV                 = 26;
+//const RQ_EXPORTAR_A_CSV                 = 26;
 
+const RQ_CERRAR_SESION      = 27;
 const RQ_DEBUG_MUP_LOCATION = 50;
 
 var diagPrim   = [];
@@ -115,7 +116,7 @@ function htmlLoaded() {
 	}
 	else if (!modoConsulta) {
 		if (!isNaN(numeroCita) || !isNaN(numeroHC)) {
-			obtenerPacienteDelHospital(numeroHC, numeroCita);			
+			obtenerPacienteDelHospital(numeroHC, numeroCita);
 		}
 		else {
 			nuevaActuacion();
@@ -129,7 +130,8 @@ function obtenerPacienteDelHospital(numHC, numCita) {
 	$.ajax({
 		data: {
 			"peticion": RQ_OBTENER_PACIENTE_DEL_HOSPITAL,
-			"numeroHC": numHC
+			"numeroHC": numHC,
+			"userId"  : gUserId
 		},
 		type: "get",
 		url: url,
@@ -137,19 +139,26 @@ function obtenerPacienteDelHospital(numHC, numCita) {
 		success: function (response) {
 			if (response.idPaciente != -1) {
 				pacienteActual = response.idPaciente;
-				obtenerActuacionPorIdPacienteNuevoRegistro(response.idPaciente, numCita);
+				if ( !isNaN(numCita) && numCita !== undefined ) {
+					obtenerActuacionPorIdPacienteNuevoRegistro(response.idPaciente, numCita);
+				}
+				else {
+					obtenerActuacionPorIdPaciente(response.idPaciente);
+				}
 				return;
 			}
 			else {
+				nuevoRegistro();
 				displayPacienteEnVista(response);
 			}
 
 			if (!isNaN(numCita)) {
-				let numeroCIPA = response.NumCIPA;
+				let numeroCIPA = response.numeroCIPA;
 				$.ajax({
 					data: {
 						"peticion": RQ_OBTENER_DATOS_AGENDA,
-						"numeroCita": numCita
+						"numeroCita": numCita,
+						"userId" : gUserId
 					},
 					url: url,
 					cache: false,
@@ -196,6 +205,9 @@ function obtenerPacienteDelHospital(numHC, numCita) {
 						console.log(response);
 					}
 				});
+			}
+			else {
+				unsetLoader();
 			}
 		},
 		error: function (response) {
@@ -2000,31 +2012,31 @@ function imprimirInforme(send, download) {
 }
 
 
-function exportToCSV() {
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url, true);
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;  charset=utf-8");
-	xhr.send("peticion=" + RQ_EXPORTAR_A_CSV);
-	xhr.responseType = 'arraybuffer';
-	
-	xhr.onload = function(e) {
-		if (this.status == 200) {
-			let blob = new Blob([ this.response ], { type: "application/zip" });
-			let filename = "HCSCPSIQ_" + new Date() + ".zip";
-			
-			if(window.navigator.msSaveOrOpenBlob) {
-				window.navigator.msSaveOrOpenBlob(blob, filename);
-			}
-			else {
-				var link = document.createElement('a');
-				link.href = window.URL.createObjectURL(blob);
-				link.download = filename;
-				link.click();
-			}
-//			saveAs(blob, filename);
-		}
-	};
-}
+//function exportToCSV() {
+//	var xhr = new XMLHttpRequest();
+//	xhr.open('POST', url, true);
+//	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;  charset=utf-8");
+//	xhr.send("peticion=" + RQ_EXPORTAR_A_CSV);// + "&idPaciente=" + pacienteActual);
+//	xhr.responseType = 'arraybuffer';
+//	
+//	xhr.onload = function(e) {
+//		if (this.status == 200) {
+//			let blob = new Blob([ this.response ], { type: "application/zip" });
+//			let filename = "HCSCPSIQ_" + new Date() + ".zip";
+//			
+//			if(window.navigator.msSaveOrOpenBlob) {
+//				window.navigator.msSaveOrOpenBlob(blob, filename);
+//			}
+//			else {
+//				var link = document.createElement('a');
+//				link.href = window.URL.createObjectURL(blob);
+//				link.download = filename;
+//				link.click();
+//			}
+////			saveAs(blob, filename);
+//		}
+//	};
+//}
 
 
 function goMUP(e) {
@@ -2086,6 +2098,20 @@ function goMUP(e) {
 
 
 function cerrarSesion() {
+	let params = new Params(["idFacultativo"]);
+	
+	$.ajaxSetup({ "cache": false });
+	let closeSession = $.get(url, {
+		"peticion": RQ_CERRAR_SESION,
+		"id-facultativo": params.results[0]
+	});
+	
+	$.when(closeSession).done(function (response) {
+		console.log(response);
+	}).fail(function (response) {
+		console.log(response);
+	})
+	
 	location.href = "login.html";
 }
 

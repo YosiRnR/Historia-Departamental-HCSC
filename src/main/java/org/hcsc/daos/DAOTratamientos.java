@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hcsc.exceptions.HSCException;
@@ -177,12 +179,24 @@ public class DAOTratamientos {
 	public ArrayList<Tratamiento> obtenerTodo() throws HSCException {
 		ArrayList<Tratamiento> tratamientosList = new ArrayList<Tratamiento>();
 		
-		String query = "SELECT * FROM TRATAMIENTOS";
+		String query = "SELECT * FROM Tratamientos";
+
+		String queryIF = "SELECT Label, Opciones, Posicion FROM InputFields WHERE Seccion = 'TRAT'";
 
 		try {
 			stmt = connection.prepareStatement(query);
 			
 			ResultSet rs = stmt.executeQuery();
+			
+			stmt = connection.prepareStatement(queryIF);
+			
+			ResultSet rsIF = stmt.executeQuery();
+			
+			Map<Integer, String[]> tratsValues = new HashMap<Integer, String[]>();
+			
+			while(rsIF.next()) {
+				tratsValues.put(rsIF.getInt("Posicion"), rsIF.getString("Opciones").split(";"));
+			}
 			
 			while(rs.next())
 			{
@@ -191,7 +205,11 @@ public class DAOTratamientos {
 				tratamiento.setIdTratamiento(rs.getInt("IdTratamiento"));
 				tratamiento.setIdActuacion  (rs.getInt("IdActuacion"));
 				tratamiento.setPosicion     (rs.getInt("Posicion"));
-				tratamiento.setValor        (rs.getString("Valor"));
+//				tratamiento.setValor        (rs.getString("Valor"));
+				
+				String[] opciones = tratsValues.get(rs.getInt("Posicion"));
+				tratamiento.setValor(rs.getString("Valor").isEmpty() ? "" : opciones[Integer.parseInt(rs.getString("Valor")) - 1]);
+				
 				tratamiento.setFechaInicio  (rs.getDate("FechaInicio"));
 				tratamiento.setFechaFin     (rs.getDate("FechaFin"));
 				

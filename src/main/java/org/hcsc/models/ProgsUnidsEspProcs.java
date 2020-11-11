@@ -10,6 +10,8 @@ public class ProgsUnidsEspProcs {
 	private int posicion;
 	private String valor;
 	
+	private String csvDescripcion;
+	
 	
 	public java.util.List<String> toCSVStrings() {
 		/**/
@@ -19,6 +21,7 @@ public class ProgsUnidsEspProcs {
 		csvRow.add(Integer.toString(idActuacion));
 		csvRow.add(Integer.toString(posicion));
 		csvRow.add(valor);
+		csvRow.add(csvDescripcion);
 		
 		return csvRow;
 	}
@@ -65,6 +68,13 @@ public class ProgsUnidsEspProcs {
 	}
 	public void setValor(String valor) {
 		this.valor = valor;
+	}
+
+	public String getCsvDescripcion() {
+		return csvDescripcion;
+	}
+	public void setCsvDescripcion(String csvDescripcion) {
+		this.csvDescripcion = csvDescripcion;
 	}
 
 }

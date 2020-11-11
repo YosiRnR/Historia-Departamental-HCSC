@@ -18,7 +18,7 @@ import com.google.gson.JsonObject;
 
 
 public class DAOCitas {
-	private static final String TABLA_CITAS = "CitasNuevo";
+	private static final String TABLA_CITAS = "CitasTest";
 	private static final String TABLA_USUARIOS = "usuarios_produccion";
 	
 	private Connection connection  = null;
@@ -41,7 +41,7 @@ public class DAOCitas {
 		}
 		catch(SQLException ex) {
 			Logger.getLogger(DAOCitas.class).error("StackTrace: ", ex);
-			throw new HSCException("SQLException: Error cerrando PreparedStatement()", ex.getCause());
+			throw new HSCException("SQLException (DAOCitas): Error cerrando PreparedStatement()", ex.getCause());
 		}
 	}
 	

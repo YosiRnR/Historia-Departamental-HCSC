@@ -5,23 +5,45 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+//import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+//import com.planbase.pdf.layoutmanager.BorderStyle;
+//import com.planbase.pdf.layoutmanager.Cell;
+//import com.planbase.pdf.layoutmanager.CellBuilder;
+//import com.planbase.pdf.layoutmanager.CellStyle;
+//import com.planbase.pdf.layoutmanager.CellStyle.Align;
+//import com.planbase.pdf.layoutmanager.LineStyle;
+//import com.planbase.pdf.layoutmanager.LogicalPage;
+//import com.planbase.pdf.layoutmanager.LogicalPage.Orientation;
+//import com.planbase.pdf.layoutmanager.Padding;
+//import com.planbase.pdf.layoutmanager.PdfLayoutMgr;
+//import com.planbase.pdf.layoutmanager.ScaledJpeg;
+//import com.planbase.pdf.layoutmanager.TableBuilder;
+//import com.planbase.pdf.layoutmanager.TextStyle;
+//import com.planbase.pdf.layoutmanager.XyOffset;
 
 import java.awt.Color;
+//import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+//import java.util.Arrays;
 
+//import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+//import static java.awt.Color.*;
+//import static com.planbase.pdf.layoutmanager.CellStyle.Align.*;
 
 
 public class GeneradorInformePDF {
 	
+//    private static <T> List<T> vec(T... ts) { return Arrays.asList(ts); }
+    
 	// ATRIBUTOS //
 	private PDDocument document               = null;
 	private PDPageContentStream contentStream = null;
@@ -33,8 +55,220 @@ public class GeneradorInformePDF {
 	private float pageHeight;
 	private float fontLeading;
 	
-	public final int HCSC_LOGO_HEIGHT = 40;
+	public final int HCSC_LOGO_HEIGHT   = 50;
 	private final int CONTENT_FONT_SIZE = 12;
+	
+//	private final float pMargin = 40;
+//	
+//	private final Padding textCellPadding = Padding.of((float)2.5);
+//	
+//	private final TextStyle titleInfoText = TextStyle.of(PDType1Font.TIMES_ROMAN, (float)8, BLACK);
+//    private final CellStyle titleHeadCell = CellStyle.of(BOTTOM_RIGHT, textCellPadding, null,
+//															BorderStyle.NO_BORDERS);
+//    private final CellStyle titleFootCellL = CellStyle.of(BOTTOM_LEFT, textCellPadding, null,
+//    												BorderStyle.NO_BORDERS);
+//    private final CellStyle titleFootCellR = CellStyle.of(BOTTOM_RIGHT, textCellPadding, null,
+//													BorderStyle.NO_BORDERS);
+//    
+//    private final CellStyle titleTextCell = CellStyle.of(MIDDLE_LEFT, textCellPadding, new Color(220, 220, 220),
+//    											BorderStyle.NO_BORDERS);
+//	
+//	private final TextStyle headingText = TextStyle.of(PDType1Font.TIMES_BOLD, (float)14, BLACK);
+//    private final CellStyle headingCell = CellStyle.of(MIDDLE_LEFT, textCellPadding, new Color(220, 220, 220),
+//                         						BorderStyle.NO_BORDERS);
+//    
+//    final TextStyle regularText = TextStyle.of(PDType1Font.TIMES_ROMAN, (float)12, BLACK);
+//    final CellStyle regularCell = CellStyle.of(MIDDLE_LEFT, textCellPadding, null,
+//    								BorderStyle.builder()
+//    									.left(LineStyle.of(BLACK))
+//    									.right(LineStyle.of(BLACK))
+//    									.bottom(LineStyle.of(BLACK))
+//    									.top(LineStyle.of(BLACK))
+//    									.build());
+//
+//	
+//	public ByteArrayOutputStream generarInformePDF(JsonObject jsonData, ServletContext servletContext) throws IOException {
+//		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+//		
+//		PdfLayoutMgr pageMgr = PdfLayoutMgr.newRgbPageMgr();
+//		
+//        LogicalPage lp = pageMgr.logicalPageStart(Orientation.PORTRAIT);
+//        
+//        float y = (float) lp.yPageTop();
+//        
+//        File logoFile      = new File(servletContext.getRealPath("/img/logoSmall.jpg"));
+//        BufferedImage logo = ImageIO.read(logoFile);
+//		lp.putRow(pMargin - 35, y + 35, Cell.builder(CellStyle.DEFAULT, 500)
+//					.add(ScaledJpeg.of(logo, 157, this.HCSC_LOGO_HEIGHT)).build());
+//		
+//		y -= 42;
+//		lp.putRow(pMargin - 35, y + 35, Cell.builder(CellStyle.of(MIDDLE_LEFT, null, null, BorderStyle.NO_BORDERS), 200)
+//				.add(TextStyle.of(PDType1Font.TIMES_ROMAN, (float)8, BLACK), vec(
+//						"Calle Prof. Martín Lagos, s/n",
+//						"28040 Madrid España",
+//						"Tel.: 91 330 30 00",
+//						"www.madrid.org/hospitalclinicosancarlos")).build());
+//
+//		lp.putRow(pMargin, y + 30, Cell.builder(CellStyle.of(MIDDLE_CENTER, null, null, BorderStyle.NO_BORDERS), lp.pageWidth())
+//				.add(TextStyle.of(PDType1Font.TIMES_ROMAN, (float)18, BLACK), vec(
+//						"INFORME CLÍNICO DE CONSULTA EXTERNA",
+//						"SERVICIO DE PSIQUIATRÍA")).build());
+//		
+//        y -= 40;
+//        float col1X    = pMargin - 20;
+//        float col2X    = pMargin + 220;
+//        float colWidth = 200;
+//        float headInterLine = 15;
+//        lp.putCell(col1X, y, Cell.builder(titleHeadCell, 60).add(titleInfoText, vec("NHC: ")).build());
+//        lp.putCell(col1X + 55, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("numerohc").getAsString())).build());
+//        lp.putCell(col2X, y, Cell.builder(titleHeadCell, 120).add(titleInfoText, vec("Dispositivo Asistencial: ")).build());
+//        lp.putCell(col2X + 115, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("centro").getAsString())).build());
+//        y -= headInterLine;
+//        lp.putCell(col1X, y, Cell.builder(titleHeadCell, 60).add(titleInfoText, vec("Nombre: ")).build());
+//        lp.putCell(col1X + 55, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("nombre").getAsString() + " "
+//        						+ jsonData.get("apellido1").getAsString() + " "
+//        						+ jsonData.get("apellido2").getAsString())).build());
+//        lp.putCell(col2X, y, Cell.builder(titleHeadCell, 120).add(titleInfoText, vec("Médico: ")).build());
+//        lp.putCell(col2X + 115, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("nombreFacultativo").getAsString())).build());
+//        y -= headInterLine;
+//        lp.putCell(col1X, y, Cell.builder(titleHeadCell, 60).add(titleInfoText, vec("Domicilio: ")).build());
+//        lp.putCell(col1X + 55, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("domicilio").getAsString())).build());
+//        lp.putCell(col2X, y, Cell.builder(titleHeadCell, 120).add(titleInfoText, vec("Fecha: ")).build());
+//        lp.putCell(col2X + 115, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("fecha").getAsString())).build());
+//        y -= headInterLine;
+//        lp.putCell(col1X, y, Cell.builder(titleHeadCell, 60).add(titleInfoText, vec("CP: ")).build());
+//        lp.putCell(col1X + 55, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("codpostal").getAsString())).build());        
+//        y -= headInterLine;
+//        lp.putCell(col1X, y, Cell.builder(titleHeadCell, 60).add(titleInfoText, vec("Fecha Nac.: ")).build());
+//        lp.putCell(col1X + 55, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("fecnac").getAsString())).build());
+//        y -= headInterLine;        
+//        lp.putCell(col1X, y, Cell.builder(titleHeadCell, 60).add(titleInfoText, vec("Sexo: ")).build());
+//        lp.putCell(col1X + 55, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("sexo").getAsString())).build());
+//        y -= headInterLine;        
+//        lp.putCell(col1X, y, Cell.builder(titleHeadCell, 60).add(titleInfoText, vec("Edad: ")).build());
+//        lp.putCell(col1X + 55, y, Cell.builder(titleTextCell, colWidth).add(titleInfoText,
+//        				vec(jsonData.get("edad").getAsString())).build());
+//        
+//        y -= 40;
+//        y  = lp.putRow(pMargin, y, Cell.builder(headingCell, 150)
+//        		.add(headingText, vec("ANTECEDENTES")).build());
+//		
+//        String antecedentesString = jsonData.get("antecedentes").getAsString();
+//        String[] antecedentesSplitted = antecedentesString.split("\n");
+//        for (int i = 0; i < antecedentesSplitted.length; i++) {
+//        	if (antecedentesSplitted[i].isEmpty()) antecedentesSplitted[i] = null;
+//        	else antecedentesSplitted[i] = antecedentesSplitted[i].replaceAll("\\p{C}", "");
+//        }
+//		
+//        y = lp.putRow(pMargin, y, Cell.builder(regularCell, lp.pageWidth() - (2 * pMargin))
+////        		.add(regularText, vec(antecedentesSplitted)).build());
+//		.add(regularText, vec("Hola", null, null, "Mundo")).build());
+//        
+//        if (y > 30) y -= 50;
+//        else y -= 20;
+//        y  = lp.putRow(pMargin, y, Cell.builder(headingCell, 200)
+//        		.add(headingText, vec("ENFERMEDAD ACTUAL")).build());
+//		
+//        String enfermedadActualString = jsonData.get("historiaactual").getAsString();
+//        String[] enfermedadActualSplitted = enfermedadActualString.split("\n");
+//        for (int i = 0; i < enfermedadActualSplitted.length; i++) {
+//        	enfermedadActualSplitted[i] = enfermedadActualSplitted[i].replaceAll("\\p{C}", "");
+//        }
+//		
+//        y = lp.putRow(pMargin, y, Cell.builder(regularCell, lp.pageWidth() - (2 * pMargin))
+//        		.add(regularText, vec(enfermedadActualSplitted)).build());
+//        
+//        if (y > 30) y -= 50;
+//        else y -= 20;
+//        y  = lp.putRow(pMargin, y, Cell.builder(headingCell, 250)
+//        		.add(headingText, vec("EVOLUCIÓN Y COMENTARIOS")).build());
+//		
+//        String evolComentariosString = jsonData.get("evolucioncomentarios").getAsString();
+//        String[] evolComentariosSplitted = evolComentariosString.split("\n");
+//        for (int i = 0; i < evolComentariosSplitted.length; i++) {
+//        	evolComentariosSplitted[i] = evolComentariosSplitted[i].replaceAll("\\p{C}", "");
+//        }
+//		
+//        y = lp.putRow(pMargin, y, Cell.builder(regularCell, lp.pageWidth() - (2 * pMargin))
+//        		.add(regularText, vec(evolComentariosSplitted)).build());
+//        
+//        float pp = lp.printAreaHeight();
+//        if (y < -pp) y -= 50;        
+//        else y -= 20;
+//        y  = lp.putRow(pMargin, y, Cell.builder(headingCell, 320)
+//        		.add(headingText, vec("TRATAMIENTOS - RECOMENDACIONES")).build());	
+//        
+//		String tratamientosRecomendacionesString = jsonData.get("tratamientosrecomendaciones").getAsString();
+//		String[] tratamientosRecomendacionesSplitted = tratamientosRecomendacionesString.replaceAll("\\p{C}", "").split("\n");
+//		
+//		JsonArray tratamientos = jsonData.get("tratamientos").getAsJsonArray();
+//		String[] tratamientosSplitted = new String[tratamientos.size()];
+//		for (int i = 0; i < tratamientos.size(); i++) {
+//			String result =
+//					tratamientos.get(i).getAsJsonObject().get("TratName").getAsString() + " " + 
+//					tratamientos.get(i).getAsJsonObject().get("ValorText").getAsString() + "    " +
+//					"#Fecha Inicio: " + 
+//					tratamientos.get(i).getAsJsonObject().get("FecIni").getAsString() + "    " +
+//					"#Fecha Fin: " +
+//					tratamientos.get(i).getAsJsonObject().get("FecFin").getAsString();
+//			
+//			tratamientosSplitted[i] = result;
+//		}
+//		
+//		XyOffset tablePos = lp.tableBuilder(XyOffset.of(pMargin, y))
+//			.addCellWidth(lp.pageWidth() - (2 * pMargin))
+//			.textStyle(regularText)
+//			.partBuilder().cellStyle(regularCell)
+//			.rowBuilder()
+//			.cellBuilder().align(MIDDLE_LEFT).add(regularText, vec(tratamientosRecomendacionesSplitted)).buildCell()
+//			.buildRow()
+//			.rowBuilder()
+//			.cellBuilder().align(MIDDLE_LEFT).add(regularText, vec(tratamientosSplitted)).buildCell().buildRow()
+//			.buildPart()
+//			.buildTable();
+//		
+//		y = tablePos.y();
+//		
+//        if (y > 30) y -= 50;        
+//        else y -= 20;
+//        y  = lp.putRow(pMargin, y, Cell.builder(headingCell, 150)
+//        				.add(headingText, vec("DIAGNOSTICOS")).build());
+//        
+//		JsonArray diagnosticos = jsonData.get("diagnosticos").getAsJsonArray();
+//
+//		/** NOMBRE DEL DIAGNOSTICO **/
+//		String[] diagSplitted = new String[diagnosticos.size()];
+//		for (int i = 0; i < diagnosticos.size(); i++) {			
+//			
+//			String item = diagnosticos.get(i).getAsJsonObject().get("DiagName").getAsString();
+//
+//			diagSplitted[i] = item;
+//		}
+//		
+//        y = lp.putRow(pMargin, y, Cell.builder(regularCell, lp.pageWidth() - (2 * pMargin))
+//        		.add(regularText, vec(diagSplitted)).build());
+//		
+//
+//        lp.putRow(pMargin, y, Cell.builder(titleFootCellL, lp.pageWidth() - (2 * pMargin))
+//        		.add(titleInfoText, vec("Responsable del informe: " + jsonData.get("nombreFacultativo").getAsString())).build());
+//        lp.putRow(pMargin, y, Cell.builder(titleFootCellR, lp.pageWidth() - (2 * pMargin))
+//        		.add(titleInfoText, vec("Madrid a: " + jsonData.get("fechahoy").getAsString())).build());
+//			       
+//        lp.commit();
+//        
+//        pageMgr.save(outStream);
+//		
+//		return outStream;
+//	}
 	
 	// METODOS //
 	public float getPosY(float posY, float sizeY) {
@@ -408,7 +642,7 @@ public class GeneradorInformePDF {
 			this.document.addPage(anotherPage);
 			this.contentStream.close();
 			this.contentStream = new PDPageContentStream(this.document, anotherPage);
-			this.cursorPosY = 20;
+			this.cursorPosY = 30;
 		}
 		
 		// El +15 es por el espacio que se añade para separar los 2 contenidos de los tratamientos //
@@ -575,7 +809,7 @@ public class GeneradorInformePDF {
 				this.contentStream.close();
 				this.contentStream = new PDPageContentStream(this.document, anotherPage);
 				
-				yPos = 20;
+				yPos = 30;
 				
 				if (withRect) {
 					int altura = (int)((text.size() - lineCount) * fontSize + 20 + fontLeading);

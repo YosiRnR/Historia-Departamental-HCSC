@@ -11,6 +11,8 @@ public class SitClinicaDAS {
 	private String valor;
 	private int tipoSCFDAS;
 	
+	private String csvDescripcion;
+	
 
 	public java.util.List<String> toCSVStrings() {
 		/**/
@@ -21,6 +23,7 @@ public class SitClinicaDAS {
 		csvRow.add(Integer.toString(posicion));
 		csvRow.add(valor);
 		csvRow.add(Integer.toString(tipoSCFDAS));
+		csvRow.add(csvDescripcion);
 		
 		return csvRow;
 	}
@@ -75,5 +78,12 @@ public class SitClinicaDAS {
 	public void setTipoSCFDAS(int tipoSCFDAS) {
 		this.tipoSCFDAS = tipoSCFDAS;
 	}
-
+	
+	public String getCsvDescripcion() {
+		return csvDescripcion;
+	}
+	public void setCsvDescripcion(String csvDescripcion) {
+		this.csvDescripcion = csvDescripcion;
+	}
+	
 }

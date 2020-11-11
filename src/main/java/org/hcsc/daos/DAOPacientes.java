@@ -255,7 +255,7 @@ public class DAOPacientes {
 			ResultSet rs = stmt.executeQuery();
 			
 			if (rs.next()) {
-				paciente = this.crearPacienteDeResultSet(rs);
+				result = this.crearPacienteDeResultSet(rs);
 			}
 		}
 		catch(SQLException ex) {

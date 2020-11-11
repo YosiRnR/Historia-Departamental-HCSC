@@ -14,6 +14,8 @@ public class Diagnostico {
 									// 4 -> ESTADIAJE CLINICO DE LA DEPRESION / PSICOSIS (1 combobox)
 	private String cieDiagnostico;  // Valor CIE 10 del diagnostico
 	private int posCombo;			// Posicion del combo dentro del tipo de diagnostico
+	
+	private String csvDescripcion;
 
 //	private String descripcion;		// Campo extra para devolver la descripcion del diagnostico
 	
@@ -27,6 +29,7 @@ public class Diagnostico {
 		csvRow.add(Integer.toString(tipoDiagnostico));
 		csvRow.add(cieDiagnostico);
 		csvRow.add(Integer.toString(posCombo));
+		csvRow.add(csvDescripcion);
 		
 		return csvRow;
 	}
@@ -80,6 +83,12 @@ public class Diagnostico {
 		this.posCombo = posCombo;
 	}
 
+	public String getCsvDescripcion() {
+		return csvDescripcion;
+	}
+	public void setCsvDescripcion(String csvDescripcion) {
+		this.csvDescripcion = csvDescripcion;
+	}
 //	public String getDescripcion() {
 //		return descripcion;
 //	}

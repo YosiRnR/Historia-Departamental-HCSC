@@ -2,6 +2,7 @@
  ** 
  **/
 const RQ_BUSCAR_PACIENTE_POR_PATRON = 12;
+const RQ_CERRAR_SESION              = 27;
 
 var idFacultativo = "";
 
@@ -111,8 +112,8 @@ function buscar() {
 	
 	setLoader();
 	$.when(buscarPacientes).done(function (response) {
-		crearTablaResultados(response.Pacientes);
 		unsetLoader();
+		crearTablaResultados(response.Pacientes);
 	}).fail(function (response) {
 		console.log(response);
 		unsetLoader();
@@ -128,7 +129,10 @@ function crearTablaResultados(data) {
 	
 	searchTable.clear().draw();
 	
-	for (let cont = 0; cont < data.length; cont++) {
+	let resultsLength = data.length;
+	if (resultsLength > 200) resultsLength = 200;
+	
+	for (let cont = 0; cont < resultsLength; cont++) {
 		let item = data[cont];
 
 		let doc = "";
@@ -224,5 +228,19 @@ function nuevo() {
 
 
 function cerrarSesion() {
+	let params = new Params(["idFacultativo"]);
+	
+	$.ajaxSetup({ "cache": false });
+	let closeSession = $.get(url, {
+		"peticion": RQ_CERRAR_SESION,
+		"id-facultativo": params.results[0]
+	});
+	
+	$.when(closeSession).done(function (response) {
+		console.log(response);
+	}).fail(function (response) {
+		console.log(response);
+	})
+	
 	location.href = "login.html";
 }

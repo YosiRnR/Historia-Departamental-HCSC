@@ -29,25 +29,31 @@
 			<div id="loader"></div>
 		</div>
 		
-		<div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-			<div class="btn">
-				<button onclick="irBusquedaPacientes()">Búsqueda Pacientes</button>
+		<div style="display:grid; grid-template-columns:1fr 1fr 1fr; grid-gap:1px; margin-bottom:25px;">
+			<div style="display:flex; justify-content:space-around;">
+				<div class="btn">
+					<button onclick="irBusquedaPacientes()">Búsqueda Pacientes</button>
+				</div>
+	   			<div class="btn">
+	              	<button id="exportCSV" onclick="exportToCSV();">Exportar a CSV</button>
+	            </div>
 			</div>
-
-			<div style="display: flex; align-items: center; position: relative;">
+			
+			<div style="text-align:center;">
+			<div style="display: inline-flex; align-items: center; position: relative;">
 				<label for="fec-citas">Fecha:</label>
 				<div>
- 					<label class="calIcon" for="fec-citas" style="margin-left: 85px; margin-top: 1px;">📅</label>
+ 					<label class="calIcon" for="fec-citas" style="margin-left: 85px; margin-top:-2px;">📅</label>
 					<input class="calendar" id="fec-citas" type="text" readonly autocomplete="off">
  	                <label class="clean">❌</label>
     			</div>
 			</div>
+			</div>
 			
-			<!--div class="btn" style="position: absolute; right: 100px;"-->
-			<div class="btn">
+			<div class="btn" style="display:flex; justify-content:flex-end; margin-right: 5.75vw;">
 	          	<button id="cerrar-sesion" onclick="cerrarSesion();">Cerrar Sesión</button>
 	        </div>
-        </div>
+		</div>
                        
 		<form id="tabla">
 			<table id="table-citas" class="display responsive nowrap" style="width:'100%'">

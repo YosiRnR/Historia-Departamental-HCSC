@@ -3,10 +3,19 @@
  **/
 const RQ_CITAS_POR_FACULTATIVO     = 20;
 const RQ_OBTENER_PACIENTE_POR_CIPA = 25;
-const RQ_CERRAR_SESION             = 3500;
+const RQ_EXPORTAR_A_CSV            = 26;
+const RQ_CERRAR_SESION             = 27;
 
 
 $(document).ready(function () {
+
+	let params = new Params([ "idFacultativo" ]);
+	if (params.results[0] === "24628" || params.results[0] === "22520" || params.results[0] === "27091") {
+		$("#exportCSV").show();
+	}
+	else {
+		$("#exportCSV").hide();		
+	}
 	
 	let todayDate = new Date();
 	let day = (todayDate.getDate().length < 2) ? '0' + todayDate.getDate() : todayDate.getDate();
@@ -283,6 +292,31 @@ function irBusquedaPacientes() {
 	location.href = "search.html?" + query;
 }
 
+function exportToCSV() {
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;  charset=utf-8");
+	xhr.send("peticion=" + RQ_EXPORTAR_A_CSV);// + "&idPaciente=" + pacienteActual);
+	xhr.responseType = 'arraybuffer';
+	
+	xhr.onload = function(e) {
+		if (this.status == 200) {
+			let blob = new Blob([ this.response ], { type: "application/zip" });
+			let filename = "HCSCPSIQ_" + new Date() + ".zip";
+			
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveOrOpenBlob(blob, filename);
+			}
+			else {
+				var link = document.createElement('a');
+				link.href = window.URL.createObjectURL(blob);
+				link.download = filename;
+				link.click();
+			}
+//			saveAs(blob, filename);
+		}
+	};
+}
 
 function cerrarSesion() {
 	let params = new Params(["idFacultativo"]);

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hcsc.exceptions.HSCException;
@@ -181,18 +183,36 @@ public class DAOSitClinicaDAS {
 	
 		String query = "SELECT * FROM SitClinicaDAS";
 		
+		String queryIF = "SELECT Label, Seccion, Posicion FROM InputFields WHERE Seccion = 'SCF' OR Seccion = 'DAS'";
+		
 		try {
 			stmt = connection.prepareStatement(query);
 			
 			ResultSet rs = stmt.executeQuery();
 			
+			stmt = connection.prepareStatement(queryIF);
+			
+			ResultSet rsIF = stmt.executeQuery();
+			
+			Map<String, Map<Integer, String>> scfMap = new HashMap<String, Map<Integer, String>>();
+			
+			while(rsIF.next()) {
+				if (scfMap.get(rsIF.getString("Seccion")) == null)
+					scfMap.put(rsIF.getString("Seccion"), new HashMap<Integer,String>());
+				
+				scfMap.get(rsIF.getString("Seccion")).put(rsIF.getInt("Posicion"), rsIF.getString("Label"));
+			}
+			
 			while(rs.next()) {
 				SitClinicaDAS scf = new SitClinicaDAS();
 				
+				scf.setIdActuacion                (rs.getInt("IdActuacion"));
 				scf.setIdSituacionClinicaFuncional(rs.getInt("IdSituacionClinicaFuncional"));
 				scf.setPosicion                   (rs.getInt("Posicion"));
 				scf.setValor                      (rs.getString("Valor"));
 				scf.setTipoSCFDAS                 (rs.getInt("TipoSCFDAS"));
+				String tipo = (rs.getInt("TipoSCFDAS") == 0) ? "SCF" : "DAS";
+				scf.setCsvDescripcion(scfMap.get(tipo).get(rs.getInt("Posicion")));
 				
 				sitClinFunc.add(scf);
 			}

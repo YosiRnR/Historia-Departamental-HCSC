@@ -53,7 +53,8 @@ public class DAOFactory {
 			}
 		}
 		catch(SQLException ex) {
-			ex.printStackTrace();
+			Logger.getLogger(DAOFactory.class).error("SQLException: Error cerrando conexión", ex);
+//			ex.printStackTrace();
 		}		
 	}
 	
@@ -61,7 +62,8 @@ public class DAOFactory {
 		try {
 			connection.setAutoCommit(autoCommit);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			Logger.getLogger(DAOFactory.class).error("SQLException: Error estableciendo AutoCommit", ex);
+//			ex.printStackTrace();
 		}
 	}
 	
@@ -70,7 +72,8 @@ public class DAOFactory {
 			connection.commit();
 		}
 		catch(SQLException ex) {
-			ex.printStackTrace();
+			Logger.getLogger(DAOFactory.class).error("SQLException: Error haciendo commit", ex);
+//			ex.printStackTrace();
 			this.close();
 		}
 	}
@@ -80,7 +83,8 @@ public class DAOFactory {
 			connection.rollback();
 		}
 		catch(SQLException ex) {
-			ex.printStackTrace();
+			Logger.getLogger(DAOFactory.class).error("SQLException: Error cerrando rollback", ex);
+//			ex.printStackTrace();
 			this.close();
 		}
 	}
