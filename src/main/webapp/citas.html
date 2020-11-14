@@ -29,8 +29,8 @@
 			<div id="loader"></div>
 		</div>
 		
-		<div style="display:grid; grid-template-columns:1fr 1fr 1fr; grid-gap:1px; margin-bottom:25px;">
-			<div style="display:flex; justify-content:space-around;">
+		<div style="display:grid; grid-template-columns:1fr 1fr 1fr; grid-gap:1px; margin-bottom:25px; display:-ms-grid; -ms-grid-columns: 1fr 1fr 1fr;">
+			<div style="display:flex; justify-content:space-around; ms-grid-column:1;">
 				<div class="btn">
 					<button onclick="irBusquedaPacientes()">Búsqueda Pacientes</button>
 				</div>
@@ -39,7 +39,7 @@
 	            </div>
 			</div>
 			
-			<div style="text-align:center;">
+			<div style="text-align:center; -ms-grid-column:2;">
 			<div style="display: inline-flex; align-items: center; position: relative;">
 				<label for="fec-citas">Fecha:</label>
 				<div>
@@ -50,7 +50,7 @@
 			</div>
 			</div>
 			
-			<div class="btn" style="display:flex; justify-content:flex-end; margin-right: 5.75vw;">
+			<div class="btn" style="display:flex; justify-content:flex-end; margin-right: 5.75vw; -ms-grid-column:3;">
 	          	<button id="cerrar-sesion" onclick="cerrarSesion();">Cerrar Sesión</button>
 	        </div>
 		</div>

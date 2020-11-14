@@ -51,6 +51,7 @@ function login() {
 				if (equipoCalle) {
 					let query = CryptoJS.AES.encrypt("idFacultativo=" + response.codigoFacultativo +
 							"&cias=" + response.cias +
+							"&dni=" + username +
 							"&modoConsulta=" + modoConsulta +
 							"&equipoCalle=true", "12349876aeiou");
 					
@@ -59,6 +60,7 @@ function login() {
 				else if (internoSoloConsulta === false) {
 					let query = CryptoJS.AES.encrypt("idFacultativo=" + response.codigoFacultativo +
 							"&idFacultaAlt=" + response.codigoFacultaAlt + "&cias=" + response.cias +
+							"&dni=" + username +
 							"&equipoCalle=false&internoSoloConsulta=false","12349876aeiou");
 					
 					location.href = "citas.html?" + query;
@@ -66,6 +68,7 @@ function login() {
 				else {
 					let query = CryptoJS.AES.encrypt("idFacultativo=" + response.codigoFacultativo +
 							"&cias=" + response.cias +
+							"&dni=" + username +
 							"&modoConsulta=true&equipoCalle=false", "12349876aeiou");
 					
 					location.href = "search.html?" + query;

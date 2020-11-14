@@ -13,14 +13,16 @@ public class DataSource {
 	private static HikariConfig config = new HikariConfig();
 	private static HikariDataSource dataSource;
 	
-//	private static final String dataBaseUrl =
-//								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatria;"
-//									+ "instance=SQLEXPRESS01;"
-//									+ "user=sa;password=Root1001;charset=iso_1";	
+	// PRODUCCION
 	private static final String dataBaseUrl =
-								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatriaDevelop;"
+								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatria;"
 									+ "instance=SQLEXPRESS01;"
 									+ "user=sa;password=Root1001;charset=iso_1";	
+	// DESARROLLO
+//	private static final String dataBaseUrl =
+//								"jdbc:jtds:sqlserver://localhost/HCSCPsiquiatriaDevelop;"
+//									+ "instance=SQLEXPRESS01;"
+//									+ "user=sa;password=Root1001;charset=iso_1";	
 	
 	static {
 		config.setDriverClassName("net.sourceforge.jtds.jdbc.Driver");

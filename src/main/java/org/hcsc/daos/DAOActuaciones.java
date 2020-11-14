@@ -215,7 +215,7 @@ public class DAOActuaciones {
 				actuacion.setFechaAltaEquipoCalle(rs.getDate("FechaAltaEquipoCalle"));
 				
 				actuacion.setMedidaProteccion(rs.getInt("MedidaProteccion") > 0 ? true : false);
-				actuacion.setResidencia(rs.getInt("Residencia") > 0 ? true : false);				
+				actuacion.setResidencia(rs.getInt("Residencia") > 0 ? true : false);
 			}
 		}
 		catch(SQLException ex) {

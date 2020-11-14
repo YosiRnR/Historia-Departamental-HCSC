@@ -529,7 +529,7 @@ public class GeneradorInformePDF {
 		if (this.cursorPosY >= this.pageHeight) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
-			anotherPage.setUserUnit(72);
+			//anotherPage.setUserUnit(72);
 			this.document.addPage(anotherPage);
 			this.contentStream.close();
 			this.contentStream = new PDPageContentStream(this.document, anotherPage);
@@ -581,7 +581,7 @@ public class GeneradorInformePDF {
 		if (this.cursorPosY >= this.pageHeight) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
-			anotherPage.setUserUnit(72);
+			//anotherPage.setUserUnit(72);
 			this.document.addPage(anotherPage);
 			this.contentStream.close();
 			this.contentStream = new PDPageContentStream(this.document, anotherPage);
@@ -638,7 +638,7 @@ public class GeneradorInformePDF {
 		if (this.cursorPosY >= this.pageHeight) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
-			anotherPage.setUserUnit(72);
+			//anotherPage.setUserUnit(72);
 			this.document.addPage(anotherPage);
 			this.contentStream.close();
 			this.contentStream = new PDPageContentStream(this.document, anotherPage);
@@ -747,7 +747,7 @@ public class GeneradorInformePDF {
 		if (this.cursorPosY > this.pageHeight) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
-			anotherPage.setUserUnit(72);
+			//anotherPage.setUserUnit(72);
 			this.document.addPage(anotherPage);
 			this.contentStream.close();
 			this.contentStream = new PDPageContentStream(this.document, anotherPage);
@@ -804,7 +804,7 @@ public class GeneradorInformePDF {
 			if (yPos + fontLeading > this.pageHeight) {
 				PDPage anotherPage = new PDPage();
 				this.pages.add(anotherPage);
-				anotherPage.setUserUnit(72);
+				//anotherPage.setUserUnit(72);
 				this.document.addPage(anotherPage);
 				this.contentStream.close();
 				this.contentStream = new PDPageContentStream(this.document, anotherPage);
@@ -850,7 +850,7 @@ public class GeneradorInformePDF {
 		if (yPos < fontLeading + 5) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
-			anotherPage.setUserUnit(72);
+			//anotherPage.setUserUnit(72);
 			this.document.addPage(anotherPage);
 			this.contentStream.close();
 			this.contentStream = new PDPageContentStream(this.document, anotherPage);

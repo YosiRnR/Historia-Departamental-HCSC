@@ -221,7 +221,7 @@ function listarCitas(response) {
 
 
 function seleccionar(item) {
-	let params = new Params(["idFacultativo", "cias"]);
+	let params = new Params(["idFacultativo", "cias", "dni"]);
 
 	/** Si la cita esta atendida debe estar en la BD, buscar el idPaciente para mostrar sus datos. **/
 	if (item.atendida) {
@@ -235,6 +235,7 @@ function seleccionar(item) {
 			
         	let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&idPaciente=" + idPaciente +
 					"&numeroCita=" + item.numeroCita + "&modoConsulta=true" +
+					"&dni=" + params.results[2] +
 					"&cias=" + params.results[1] + 
 					"&equipoCalle=false&numICU=" + item.numeroICU + "&internoSoloConsulta=false", "12349876aeiou");
         	
@@ -248,7 +249,7 @@ function seleccionar(item) {
 	else {
     	let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&numeroHC=" + item.numeroHC +
 				"&numeroCita=" + item.numeroCita + "&equipoCalle=false&numeroICU=" + item.numeroICU +
-				"&cias=" + params.results[1] + "&from=citas" +
+				"&cias=" + params.results[1] + "&dni=" + params.results[2] + "&from=citas" +
 				"&internoSoloConsulta=false", "12349876aeiou");
     	
     	location.href = "registro.html?" + query;
@@ -258,7 +259,7 @@ function seleccionar(item) {
 
 /** Buscar el idPaciente en la BD para poder editar sus actuaciones psiquiatricas **/
 function editar(item) {
-	let params = new Params(["idFacultativo", "cias"]);
+	let params = new Params(["idFacultativo", "cias", "dni"]);
 	
 	let edit = $.get(url, {
 		"peticion": RQ_OBTENER_PACIENTE_POR_CIPA,
@@ -270,7 +271,7 @@ function editar(item) {
     	
 		let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&idPaciente=" + idPaciente +
 								"&numeroCita=" + item.numeroCita + "&modoConsulta=false" +
-								"&cias=" + params.results[1] + 
+								"&cias=" + params.results[1] + "&dni=" + params.results[2] +
 								"&equipoCalle=false&numeroICU=" + item.numeroICU + "&internoSoloConsulta=false", "12349876aeiou");
 		
     	location.href = "registro.html?" + query;
@@ -283,10 +284,10 @@ function editar(item) {
 
 
 function irBusquedaPacientes() {
-	let params = new Params([ "idFacultativo", "cias" ]);
+	let params = new Params([ "idFacultativo", "cias", "dni" ]);
 	
 	let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] +
-								"&cias=" + params.results[1] + 
+								"&cias=" + params.results[1] + "&dni=" + params.results[2] + 
 								"&modoConsulta=false&equipoCalle=false&internoSoloConsulta=false", "12349876aeiou");
 	
 	location.href = "search.html?" + query;

@@ -75,7 +75,7 @@ public class ControladorActuacion {
  		return jsonResponse.toString();
 	}
 	
-	public JsonObject obtenerActuacionPorIdPaciente(int idPaciente) throws HSCException {
+	public JsonObject obtenerActuacionPorIdPaciente(int idPaciente, int userId) throws HSCException {
 		JsonObject result = null;
 		
 		DAOFactory daoFactory = new DAOFactory();
@@ -141,6 +141,15 @@ public class ControladorActuacion {
 			actuacion.setCodEmpleado(actuacion.getIdProfesional());
 			actuacion.setIdProfesional(nombreFacultativo);
 			
+			/** Almacenar el control del acceso al registro **/
+			daoFactory.crearDAOAccesos().grabarAcceso
+			(
+					actuacion.getIdActuacion(),
+					userId, actuacion.getIdPaciente(),
+					paciente.getNumeroHistoriaClinica(), actuacion.getNumRegistro(),
+					new java.sql.Date(actuacion.getFecha().getTime())
+			);
+			
 			/** Cerrar conexion con BBDD **/
 			daoFactory.close();
 			
@@ -166,7 +175,7 @@ public class ControladorActuacion {
 		return result;
 	}
 	
-	public JsonObject obtenerActuacionPorNumRegistro(int idPaciente, int numRegistro) throws HSCException {
+	public JsonObject obtenerActuacionPorNumRegistro(int idPaciente, int numRegistro, int userId) throws HSCException {
 		JsonObject result = null;
 		
 		DAOFactory daoFactory = new DAOFactory();
@@ -207,6 +216,15 @@ public class ControladorActuacion {
 			nombreFacultativo += " " + jsonFacultativo.get("apellido2").getAsString();*/
 			actuacion.setCodEmpleado(actuacion.getIdProfesional());
 			actuacion.setIdProfesional(nombreFacultativo);
+			
+			/** Almacenar el control del acceso al registro **/
+			daoFactory.crearDAOAccesos().grabarAcceso
+			(
+					actuacion.getIdActuacion(),
+					userId, actuacion.getIdPaciente(),
+					paciente.getNumeroHistoriaClinica(), actuacion.getNumRegistro(),
+					new java.sql.Date(actuacion.getFecha().getTime())
+			);
 			
 			/** Cerrar conexion con BBDD **/
 			daoFactory.close();

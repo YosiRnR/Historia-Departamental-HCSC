@@ -18,7 +18,8 @@ import com.google.gson.JsonObject;
 
 
 public class DAOCitas {
-	private static final String TABLA_CITAS = "CitasTest";
+//	private static final String TABLA_CITAS = "CitasNuevo";	// DESARROLLO
+	private static final String TABLA_CITAS = "CitasTest";	// PRODUCCION
 	private static final String TABLA_USUARIOS = "usuarios_produccion";
 	
 	private Connection connection  = null;

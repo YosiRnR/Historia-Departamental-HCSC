@@ -402,6 +402,7 @@ public class ClientHL7 {
 					Logger.getLogger(ClientHL7.class).info("UnsupportedOperationException: StackTrace: ", uoEx);
 				}
 			}
+			String numICUString = (numICU == -1) ? "" : Long.toString(numICU);
 			String prestacion = "";
 			if (jsonData.get("prestacion") != null) {
 				prestacion = jsonData.get("prestacion").getAsString();
@@ -411,7 +412,7 @@ public class ClientHL7 {
 			String citaStr = "-1";
 			if (jsonData.has("numeroCita") && !jsonData.get("numeroCita").isJsonNull()) {
 				citaStr = jsonData.get("numeroCita").getAsString();
-				if (citaStr.isEmpty() || citaStr.equals("0")) citaStr = "-1";
+				if (citaStr.isEmpty() || citaStr.equals("0")) citaStr = "";//"-1";
 			}
 			
 			/** |T|2.5 Indica 'Training' tal vez por eso el HPHIS este ignorando los envios de informes **/
@@ -428,13 +429,13 @@ public class ClientHL7 {
 					+ jsonData.get("numtlf2").getAsString() + "|\r"
 					+ "PV1|1|O|PSQG^^^^^^^^^HOSPITAL CLINICO SAN CARLOS|||^^|" + codigoFacultativo + "^"
 					+ apellidosFacultativo + "^" + nombreFacultativo
-					+ "||||||||||||" + numICU + "|||||||||||||||||||||||||"
+					+ "||||||||||||" + /*numICU*/numICUString + "|||||||||||||||||||||||||"
 					+ fechaInforme + "||||||" + citaStr/*jsonData.get("numeroCita").getAsInt()*/ + "^^^NCITA^VN|||\r"
 					+ "TXA|1|INFORME " + prestacion + "|PDF||||||||||||||AU\r"
 					+ "OBX|1|ED|^^^^||^^PDF^BASE64^" + base64Pdf;
 						
-//			Logger.getLogger(ClientHL7.class).info("Mensaje HL7 para enviar: ");
-//			Logger.getLogger(ClientHL7.class).info(msgString);
+			Logger.getLogger(ClientHL7.class).info("Mensaje HL7 para enviar: ");
+			Logger.getLogger(ClientHL7.class).info(msgString);
 			
 			int count    = 0;
 			int maxTries = 5;

@@ -128,4 +128,8 @@ public class DAOFactory {
 	public DAOProgsUnidsEspProcs crearDAOProgsUnidsEspProcs() {
 		return new DAOProgsUnidsEspProcs(connection);
 	}
+	
+	public DAOAccesos crearDAOAccesos() {
+		return new DAOAccesos(connection);
+	}
 }

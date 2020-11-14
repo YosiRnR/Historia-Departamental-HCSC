@@ -58,13 +58,14 @@ $(document).ready(function () {
 	
 	/** Comprobar si existe el parametro idFacultativo para solo permitir acceder a usuariso que hayan pasado el login **/
 	{
-		let params = new Params([ "idFacultativo", "cias" ]);
+		let params = new Params([ "idFacultativo", "cias", "dni" ]);
 		if (params.results[0] === "" || params.results[0] === undefined) {
 			location.href = "login.html";
 		}
 		
 		gUserId   = params.results[0];
 		gUserCias = params.results[1];
+		gUserDni  = params.results[2];
 	}
 	/** Fin de la comprobacion para permitir usuarios que pasen por el login **/
 
@@ -220,23 +221,25 @@ function obtenerPacienteDelHospital(numHC, numCita) {
 
 function clickNuevo() {
 	var params = new Params([ "idFacultativo", "equipoCalle", "modoConsulta",
-								"internoSoloConsulta", "cias" ]);
+								"internoSoloConsulta", "cias",  "dni" ]);
 
 	if (params.results[1] === "true") {
 		let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&equipoCalle=true" +
-											"&modoConsulta=false&cias=" + params.results[4],
+											"&modoConsulta=false&cias=" + params.results[4] +
+											"&dni=" + params.results[5],
 											"12349876aeiou");
 		location.href = "search.html?" + query;
 	}
 	else if (params.results[1] === "false" && params.results[3] === "false") {
 		let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] +
-											"&equipoCalle=false&cias=" + params.results[4],
+											"&equipoCalle=false&cias=" + params.results[4] +
+											"&dni=" + params.results[5],
 											"12349876aeiou");
 		location.href = "citas.html?" + query;
 	}
 	else {
 		let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&equipoCalle=false" +
-				"&modoConsulta=true&cias=" + params.results[4], "12349876aeiou");
+				"&modoConsulta=true&cias=" + params.results[4] + "&dni=" + params.results[5], "12349876aeiou");
 		location.href = "search.html?" + query;
 	}
 }

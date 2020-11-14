@@ -46,12 +46,18 @@ $(document).ready(function () {
 		]
 	});
 	
-	let params = new Params([ "idFacultativo", "password", "modoConsulta" ]);
+	let params = new Params([ "idFacultativo", "password", "modoConsulta", "equipoCalle" ]);
 	
 	if (params.results[2] === "true") {
 		$("#cb-modo-consulta").prop("checked", true);
 		$("#cb-modo-consulta").prop("disabled", true);
 		$("#btn-nuevo").attr("disabled", true);		
+	}
+	
+	$("#btn-citas").hide();
+	if (params.results[3] !== "true") {
+		$("#btn-nuevo").attr("disabled", true);
+		$("#btn-citas").show();
 	}
 	
 	/** Clear form inputs **/
@@ -198,32 +204,45 @@ function clickSeleccionar(obj, event) {
 
 
 function seleccionarPorIdPaciente(idPaciente) {
-	var params = new Params([ "idFacultativo", "equipoCalle", "internoSoloConsulta", "cias" ]);
+	var params = new Params([ "idFacultativo", "equipoCalle", "internoSoloConsulta", "cias", "dni" ]);
 	
     let query = CryptoJS.AES.encrypt("idPaciente=" + idPaciente + "&idFacultativo=" + params.results[0] +
     			"&modoConsulta=" + $("#cb-modo-consulta").is(":checked") +
-    			"&equipoCalle=" + params.results[1] + "&internoSoloConsulta=" + params.results[2] + "&cias=" + params.results[3], "12349876aeiou");
+    			"&equipoCalle=" + params.results[1] + "&internoSoloConsulta=" + params.results[2] +
+    			"&cias=" + params.results[3] + "&dni="+ params.results[4], "12349876aeiou");
     
 	location.href = "registro.html?" + query;
 }
 
 
 function seleccionarPorNumeroHC(numHC) {
-	let params = new Params([ "idFacultativo", "equipoCalle", "internoSoloConsulta", "cias" ]);
+	let params = new Params([ "idFacultativo", "equipoCalle", "internoSoloConsulta", "cias", "dni" ]);
 	
     let query = CryptoJS.AES.encrypt("idPaciente=0&idFacultativo=" + params.results[0] + "&numeroHC=" + numHC +
     			"&modoConsulta=" + $("#cb-modo-consulta").is(":checked") + "&equipoCalle=" + params.results[1] +
-    			"&internoSoloConsulta=" + params.results[2] + "&cias=" + params.results[3], "12349876aeiou");
+    			"&internoSoloConsulta=" + params.results[2] + "&cias=" + params.results[3] +
+    			"&dni=" + params.results[4], "12349876aeiou");
     
 	location.href = "registro.html?" + query;
 }
 
 
 function nuevo() {
-	var params = new Params([ "idFacultativo", "equipoCalle", "cias" ]);
+	var params = new Params([ "idFacultativo", "equipoCalle", "cias", "dni" ]);
 
-    let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&equipoCalle=" + params.results[1] + "&cias=" + params.results[2], "12349876aeiou");
+    let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&equipoCalle=" + params.results[1] +
+    		"&cias=" + params.results[2] + "&dni=" + params.results[3], "12349876aeiou");
 	location.href = "registro.html?" + query; 
+}
+
+
+function volverCitas() {
+	var params = new Params([ "idFacultativo", "equipoCalle", "cias", "dni" ]);
+
+    let query = CryptoJS.AES.encrypt("idFacultativo=" + params.results[0] + "&equipoCalle=" + params.results[1] +
+    		"&cias=" + params.results[2] + "&dni=" + params.results[3], "12349876aeiou");
+	location.href = "citas.html?" + query; 
+	
 }
 
 

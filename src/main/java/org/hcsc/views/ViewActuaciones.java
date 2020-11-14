@@ -190,7 +190,7 @@ public class ViewActuaciones extends HttpServlet {
 			ControladorActuacion actuacionCtrl = new ControladorActuacion();
 			String result = "";
 			try {
-				result = actuacionCtrl.obtenerActuacionPorIdPaciente(idPaciente).toString();
+				result = actuacionCtrl.obtenerActuacionPorIdPaciente(idPaciente, idProfesional).toString();
 			} catch (FileIOException e) {
 				e.printStackTrace();
 			}
@@ -210,7 +210,7 @@ public class ViewActuaciones extends HttpServlet {
 			ControladorActuacion actuacionCtrl = new ControladorActuacion();
 			String result = "";
 			
-			result = actuacionCtrl.obtenerActuacionPorNumRegistro(idPaciente, numRegistro).toString();
+			result = actuacionCtrl.obtenerActuacionPorNumRegistro(idPaciente, numRegistro, idProfesional).toString();
 			
 			response.getWriter().print(result);
 			break;
