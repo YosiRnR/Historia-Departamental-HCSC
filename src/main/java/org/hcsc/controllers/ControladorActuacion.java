@@ -163,7 +163,7 @@ public class ControladorActuacion {
 				jsonFechas.add(fecha);
 			}
 			result.add("fechasActuaciones", jsonFechas);
-			}
+		}
 		catch(HSCException ex) {
 			daoFactory.rollback();
 			throw ex;
@@ -580,6 +580,234 @@ public class ControladorActuacion {
 		
 		return pdfStream;
 	}
+	
+	public byte[] exportToCSVRelacionado() throws IOException, HSCException {
+		String output = "";
+		
+		DAOFactory daoFactory = new DAOFactory();
+		
+		StringWriter writer        = new StringWriter();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ZipOutputStream zos        = new ZipOutputStream(baos);
+		int gIndex = 0;
+		
+		try {
+		java.util.List<String> exportHeaders = java.util.Arrays.asList(
+			"Numero Historia Clinica",
+			"Numero CIPA",
+			"Nombre", "Apellido1", "Apellido2",
+			"Sexo",
+			"Fecha Nacimiento",
+			"Fecha Actuacion",
+			"Codigo Agenda",
+			"Lugar Atencion",
+			"Id Profesional",
+			"Tipo Prestacion",
+			"Numero Cita",
+			"Numero ICU",
+			"Diagnostico Psiquiatrico Principal 1", "Diagnostico Psiquiatrico Principal 2", "Diagnostico Psiquiatrico Principal 3",
+			"Diagnostico Psiquiatrico Secundario 1", "Diagnostico Psiquiatrico Secundario 2", "Diagnostico Psiquiatrico Secundario 3",
+			"Diagnostico Psiquiatrico Secundario 4", "Diagnostico Psiquiatrico Secundario 5", "Diagnostico Psiquiatrico Secundario 6",
+			"Diagnostico No Psiquiatrico 1", "Diagnostico No Psiquiatrico 2", "Diagnostico No Psiquiatrico 3",
+			"Diagnostico No Psiquiatrico 4", "Diagnostico No Psiquiatrico 5", "Diagnostico No Psiquiatrico 6",
+			"Estadiaje Depresión", "Estadiaje Psicosis",
+			"Escala CGI",
+			"GAF",
+			"CGAF",
+			"Cuidado Personal",
+			"Funcionamiento Ocupacional",
+			"Funcionamiento Familiar",
+			"Funcionamiento Social Amplio",
+			"Psicoterapia Individual",
+			"Fecha Inicio", "Fecha Fin",
+			"Psicoterapia Grupal",
+			"Fecha Inicio", "Fecha Fin",
+			"Psicoeducación Grupal",
+			"Fecha Inicio", "Fecha Fin",
+			"Grupo Multifamiliar",
+			"Fecha Inicio", "Fecha Fin",
+			"Terapia Familiar",
+			"Fecha Inicio", "Fecha Fin",
+			"Programa Continuidad Cuidados",
+			"Proceso Psicosis (No intervención precoz)",
+			"Programa Intervención Precoz Psicosis",
+			"Proceso Depresión",
+			"Proceso TCA",
+			"Unidad de Trastorno de Personalidad",
+			"Unidad de Psicogeriatría",
+			"Tratamiento ambulatorio intensivo SMNyA",
+			"Programa Transición",
+			"Programa C",
+			"Programa Joven",
+			"Fecha Fin"
+		);
+		
+		char separator = ';';
+		
+		CSVExport.writeLine(writer, exportHeaders, separator);
+		
+		//int baseIdActuacion = 320;
+		//ArrayList<Integer> idsActuaciones = daoFactory.crearDAOActuaciones().obtenerTodosIdActuaciones();
+		
+		for (int index = 320; index < 370/*idsActuaciones.size()*/; index++) {
+			gIndex = index;
+			Actuacion actuacion = daoFactory.crearDAOActuaciones().obtenerPorIdActuacion(index/*idsActuaciones.get(index)*/);
+			if (actuacion != null) {
+			
+			Paciente paciente = daoFactory.crearDAOPacientes().obtenerPorID(actuacion.getIdPaciente());
+			if (paciente == null) { System.out.println("ID ACTUACION: " + index); }
+			
+			ArrayList<Diagnostico> diagnosticos = daoFactory.crearDAODiagnosticos()
+					.obtenerPorIdActuacion(actuacion.getIdActuacion());
+			ArrayList<SitClinicaDAS> sitClinicaDAS = daoFactory.crearDAOSitClinicaDAS()
+					.obtenerPorIdActuacion(actuacion.getIdActuacion());
+			ArrayList<Tratamiento> tratamientos = daoFactory.crearDAOTratamientos()
+					.obtenerPorIdActuacion(actuacion.getIdActuacion());
+			ArrayList<ProgsUnidsEspProcs> puep = daoFactory.crearDAOProgsUnidsEspProcs()
+					.obtenerPorIdActuacion(actuacion.getIdActuacion());
+			
+			ArrayList<String> rowLine = new ArrayList<String>();
+			
+			rowLine.add(Integer.toString(paciente.getNumeroHistoriaClinica()));
+			rowLine.add(Integer.toString(paciente.getNumeroCIPA()));
+			rowLine.add(String.valueOf(paciente.getNombre().isEmpty() ? "" : paciente.getNombre().charAt(0)));
+			rowLine.add(paciente.getApellido1().isEmpty() ? "" : String.valueOf(paciente.getApellido1().charAt(0)));
+			rowLine.add(paciente.getApellido2().isEmpty() ? "" : String.valueOf(paciente.getApellido2().charAt(0)));
+			rowLine.add(Short.toString(paciente.getSexo()));
+			rowLine.add(paciente.getFechaNacimiento() == null ? "" : paciente.getFechaNacimiento().toString());
+			rowLine.add(actuacion.getFecha().toString());
+			rowLine.add(actuacion.getCodigoAgenda());
+			rowLine.add(actuacion.getLugarAtencion());
+			rowLine.add(actuacion.getCodEmpleado());
+			rowLine.add(actuacion.getTipoPrestacion());
+			rowLine.add(Integer.toString(actuacion.getNumeroCita()));
+			rowLine.add(actuacion.getNumeroICU());
+			
+			String diagP[] = {"", "", ""};
+			String diagS[] = {"", "", "", "", "", ""};
+			String diagN[] = {"", "", "", "", "", ""};
+			String estadiajes[] = {"", ""};
+			String estadiajesValores[] = { "1a", "1b", "2", "3a", "3b", "3c", "4" };
+			
+			for (Diagnostico diagnostico : diagnosticos) {
+				if (diagnostico.getTipoDiagnostico() == 1) {
+					diagP[diagnostico.getPosCombo() - 1] = diagnostico.getCieDiagnostico();
+				}
+				else if (diagnostico.getTipoDiagnostico() == 2) {
+					diagS[diagnostico.getPosCombo() - 1] = diagnostico.getCieDiagnostico();
+				}
+				else if (diagnostico.getTipoDiagnostico() == 3) {
+					diagN[diagnostico.getPosCombo() - 1] = diagnostico.getCieDiagnostico();
+				}			
+				else if (diagnostico.getTipoDiagnostico() == 4) {
+					estadiajes[diagnostico.getPosCombo() - 1] = estadiajesValores[Integer.parseInt(diagnostico.getCieDiagnostico()) - 1];
+				}			
+			}
+			
+			for (int i = 0; i < diagP.length; i++) {
+				rowLine.add(diagP[i]);
+			}
+			for (int i = 0; i < diagS.length; i++) {
+				rowLine.add(diagS[i]);
+			}
+			for (int i = 0; i < diagN.length; i++) {
+				rowLine.add(diagN[i]);
+			}
+			for (int i = 0; i < estadiajes.length; i++) {
+				rowLine.add(estadiajes[i]);
+			}
+			
+			
+			String stringSCF[] = {"", "", ""};
+			String stringDAS[] = {"", "", "", ""};
+			
+			for (SitClinicaDAS sitClinDAS : sitClinicaDAS) {
+				if (sitClinDAS.getTipoSCFDAS() == 0) {
+					stringSCF[sitClinDAS.getPosicion() - 1] = sitClinDAS.getValor();
+				}
+				else if (sitClinDAS.getTipoSCFDAS() == 1) {
+					stringDAS[sitClinDAS.getPosicion() - 1] = sitClinDAS.getValor();
+				}
+			}
+			
+			for (int i = 0; i < stringSCF.length; i++) {
+				rowLine.add(stringSCF[i]);
+			}
+			for (int i = 0; i < stringDAS.length; i++) {
+				rowLine.add(stringDAS[i]);
+			}
+			
+			
+			String stringTrats[] = {"", "", "", "", ""};
+			String stringFechI[] = {"", "", "", "", ""};
+			String stringFechF[] = {"", "", "", "", ""};
+			String tratamientosValores[] = { "0-5 sesiones", "6-10 sesiones", "11-15 sesiones", "16-20 sesiones" };
+			
+			for (Tratamiento tratamiento : tratamientos) {
+				stringTrats[tratamiento.getPosicion() - 1] = tratamientosValores[Integer.parseInt(tratamiento.getValor()) - 1];
+				stringFechI[tratamiento.getPosicion() - 1] = tratamiento.getFechaInicio().toString();
+				stringFechF[tratamiento.getPosicion() - 1] = tratamiento.getFechaFin().toString();
+			}
+			
+			for (int i = 0; i < stringTrats.length; i++) {
+				rowLine.add(stringTrats[i]);
+				rowLine.add(stringFechI[i]);
+				rowLine.add(stringFechF[i]);
+			}
+			
+			
+			rowLine.add(actuacion.isProgramaContinuidadCuidados() ? "true" : "false");
+			
+			
+			String stringPuep[] = {"", "", "", "", "", "", "", "", ""};
+			
+			for (ProgsUnidsEspProcs puepItem : puep) {
+				stringPuep[puepItem.getPosicion() - 1] = puepItem.getValor();
+			}
+			for (int i = 0; i < stringPuep.length; i++) {
+				rowLine.add(stringPuep[i]);
+			}
+			
+			rowLine.add(actuacion.isProgramaJoven() ?
+					(actuacion.getFechaInicioProgramaJoven() == null ? "" : actuacion.getFechaInicioProgramaJoven().toString()) : "");
+			rowLine.add(actuacion.isProgramaJoven() ? 
+					(actuacion.getFechaFinProgramaJoven() == null ? "" : actuacion.getFechaFinProgramaJoven().toString()) : "");
+			
+			CSVExport.writeLine(writer, rowLine, separator);
+			}
+		}
+		
+		output = writer.toString();
+		
+		zos.putNextEntry(new ZipEntry("export_relacional.csv"));
+		zos.write(output.getBytes(Charset.forName("UTF-8")));
+		zos.closeEntry();
+		writer.getBuffer().setLength(0);
+		}
+		catch(HSCException ex) {
+			Logger.getLogger(ControladorActuacion.class).error("HSCException: StackTrace: ", ex);
+			throw ex;
+		}
+		catch(IOException ex) {
+			Logger.getLogger(ControladorActuacion.class).error("IOException: StackTrace: ", ex);
+			throw ex;
+		}
+		catch(RuntimeException ex) {
+			System.out.println("ID ACTUACION: " + gIndex);
+			ex.printStackTrace();
+		}
+		finally {
+			daoFactory.close();
+			writer.flush();
+			zos.flush();
+			baos.flush();
+			writer.close();
+			zos.close();
+			baos.close();
+		}
+		
+		return baos.toByteArray();
+	}
 
 	public byte[] exportToCSV() throws IOException, HSCException {
 		String output = "";
@@ -590,6 +818,8 @@ public class ControladorActuacion {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ZipOutputStream zos        = new ZipOutputStream(baos);
 		
+		char separator = ';';
+		
 		try {
 			/** PACIENTES a CSV
 			 **/
@@ -598,12 +828,12 @@ public class ControladorActuacion {
 					"Dni", "Pasaporte", "Nie", "NumeroHistoriaClinica",	"NumeroSeguridadSocial",
 					"NumeroTarjetaSanitaria", "NumeroCIPA", "Familiar", "TelefonoFamiliar");
 			
-			CSVExport.writeLine(writer, pacientesHeader, '\t');
+			CSVExport.writeLine(writer, pacientesHeader, separator);
 						
 			ArrayList<Paciente> pacientes = daoFactory.crearDAOPacientes().obtenerTodo();
 			
 			for (Paciente paciente : pacientes) { 
-				CSVExport.writeLine(writer, paciente.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, paciente.toCSVStrings(), separator);
 			}
 			
 			output = writer.toString();
@@ -623,12 +853,12 @@ public class ControladorActuacion {
 					"equipoDeCalle", "fechaAlta", "motivoAlta", "numeroCita", "numeroICU", "fechaAltaEquipoCalle",
 					"medidaProteccion", "residencia");
 			
-			CSVExport.writeLine(writer, actuacionHeader, '\t');
+			CSVExport.writeLine(writer, actuacionHeader, separator);
 			
 			ArrayList<Actuacion> actuaciones = daoFactory.crearDAOActuaciones().obtenerTodo();
 			
 			for (Actuacion actuacion : actuaciones) {
-				CSVExport.writeLine(writer, actuacion.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, actuacion.toCSVStrings(), separator);
 			}	
 
 			output = writer.toString();
@@ -644,12 +874,12 @@ public class ControladorActuacion {
 			java.util.List<String> diagnosticoHeader = java.util.Arrays.asList("idDiagnostico", "idActuacion",
 					"tipoDiagnostico", "cieDiagnostico", "posCombo", "TipoDiagnostico");
 			
-			CSVExport.writeLine(writer, diagnosticoHeader, '\t');
+			CSVExport.writeLine(writer, diagnosticoHeader, separator);
 			
 			ArrayList<Diagnostico> diagnosticos = daoFactory.crearDAODiagnosticos().obtenerTodo();
 			
 			for (Diagnostico diagnostico : diagnosticos) {
-				CSVExport.writeLine(writer, diagnostico.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, diagnostico.toCSVStrings(), separator);
 			}	
 
 			output = writer.toString();
@@ -662,15 +892,19 @@ public class ControladorActuacion {
 			
 			/** TRATAMIENTOS a CSV
 			 **/
-			java.util.List<String> tratamientosHeader = java.util.Arrays.asList("idTratamiento", "idActuacion",
-					"Posicion", "Valor", "FechaInicio", "FechaFin");
+//			java.util.List<String> tratamientosHeader = java.util.Arrays.asList("idTratamiento", "idActuacion",
+//					"Posicion", "Valor", "FechaInicio", "FechaFin");
+			java.util.List<String> tratamientosHeader = java.util.Arrays.asList(
+					"idTratamiento", "idActuacion",
+					"Psicoterapia Individual", "Psicoterapia Grupal", "Psicoeducación Grupal", "Grupo Multifamiliar", "Terapia Familiar",
+					"FechaInicio", "FechaFin");
 			
-			CSVExport.writeLine(writer, tratamientosHeader, '\t');
+			CSVExport.writeLine(writer, tratamientosHeader, separator);
 			
 			ArrayList<Tratamiento> tratamientos = daoFactory.crearDAOTratamientos().obtenerTodo();
 			
 			for (Tratamiento tratamiento : tratamientos) {
-				CSVExport.writeLine(writer, tratamiento.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, tratamiento.toCSVStrings(), separator);
 			}	
 
 			output = writer.toString();
@@ -686,12 +920,12 @@ public class ControladorActuacion {
 			java.util.List<String> tratamientosMUPHeader = java.util.Arrays.asList("idTratamientoMup", "idActuacion",
 					"Descripcion", "tratamientoRecomendacion");
 			
-			CSVExport.writeLine(writer, tratamientosMUPHeader, '\t');
+			CSVExport.writeLine(writer, tratamientosMUPHeader, separator);
 			
 			ArrayList<TratamientosMup> tratamientosMup = daoFactory.crearDAOTratamientosMup().obtenerTodo();
 			
 			for (TratamientosMup tratamientoMup : tratamientosMup) {
-				CSVExport.writeLine(writer, tratamientoMup.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, tratamientoMup.toCSVStrings(), separator);
 			}	
 
 			output = writer.toString();
@@ -704,15 +938,20 @@ public class ControladorActuacion {
 			
 			/** SITUACIÓN CLÍNICA FUNCIONAL a CSV
 			 **/
-			java.util.List<String> sitClinicaDASHeader = java.util.Arrays.asList("idSitClinicaDAS", "idActuacion",
-					"Posicion", "Valor", "TipoSCFDAS", "NombreCampoSCFDAS");
+//			java.util.List<String> sitClinicaDASHeader = java.util.Arrays.asList("idSitClinicaDAS", "idActuacion",
+//					"Posicion", "Valor", "TipoSCFDAS", "NombreCampoSCFDAS");
+			java.util.List<String> sitClinicaDASHeader = java.util.Arrays.asList(
+					"idSitClinicaDAS", "idActuacion",
+					"Escala CGI", "GAF (en mayores de 18 años)", "CGAF (entre 0 y 17 años)",
+					"Cuidado Personal", "Funcionamiento Ocupacional", "Funcionamiento Familiar", "Funcionamiento Social Amplio");
+					
 			
-			CSVExport.writeLine(writer, sitClinicaDASHeader, '\t');
+			CSVExport.writeLine(writer, sitClinicaDASHeader, separator);
 			
 			ArrayList<SitClinicaDAS> sitClinicaDASList = daoFactory.crearDAOSitClinicaDAS().obtenerTodo();
 			
 			for (SitClinicaDAS sitClinicaDAS : sitClinicaDASList) {
-				CSVExport.writeLine(writer, sitClinicaDAS.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, sitClinicaDAS.toCSVStrings(), separator);
 			}	
 
 			output = writer.toString();
@@ -725,15 +964,21 @@ public class ControladorActuacion {
 			
 			/** PROGRAMAS, UNIDADES ESPECIALES y PROCESOS a CSV
 			 **/
-			java.util.List<String> progsUnidsEspProcsHeader = java.util.Arrays.asList("idDProgramasUnidadesProcesos", "idActuacion",
-					"Posicion", "Valor", "NombrePrograma");
+//			java.util.List<String> progsUnidsEspProcsHeader = java.util.Arrays.asList("idDProgramasUnidadesProcesos", "idActuacion",
+//					"Posicion", "Valor", "NombrePrograma");
+			java.util.List<String> progsUnidsEspProcsHeader = java.util.Arrays.asList(
+					"idDProgramasUnidadesProcesos", "idActuacion",
+					"Proceso Psicosis (No intervención precoz)", "Programa Intervención Precoz Psicosis",
+					"Proceso Depresión", "Proceso TCA", "Unidad de Trastorno de Personalidad",
+					"Unidad de Psicogeriatría", "Tratamiento ambulatorio intensivo SMNyA",
+					"Programa Transición", "Programa C");
 			
-			CSVExport.writeLine(writer, progsUnidsEspProcsHeader, '\t');
+			CSVExport.writeLine(writer, progsUnidsEspProcsHeader, separator);
 			
 			ArrayList<ProgsUnidsEspProcs> progsUnidsEspProcsList = daoFactory.crearDAOProgsUnidsEspProcs().obtenerTodo();
 			
 			for (ProgsUnidsEspProcs progUnidsEspProcs : progsUnidsEspProcsList) {
-				CSVExport.writeLine(writer, progUnidsEspProcs.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, progUnidsEspProcs.toCSVStrings(), separator);
 			}	
 
 			output = writer.toString();
@@ -746,15 +991,15 @@ public class ControladorActuacion {
 			
 			/** DATOS CLINICOS a CSV
 			 **/
-			java.util.List<String> datosClinicosHeader = java.util.Arrays.asList("idActuacion", "idPaciente",
-					"antecedentes", "enfermedadActual", "evolucionComentarios");
+			java.util.List<String> datosClinicosHeader = java.util.Arrays.asList("idActuacion", "idPaciente");/*,
+					"antecedentes", "enfermedadActual", "evolucionComentarios");*/
 			
-			CSVExport.writeLine(writer, datosClinicosHeader, '\t');
+			CSVExport.writeLine(writer, datosClinicosHeader, separator);
 			
 			ArrayList<DatosClinicos> datosClinicosList = daoFactory.crearDAODatosClinicos().obtenerTodo();
 			
 			for (DatosClinicos datosClinicos : datosClinicosList) {
-				CSVExport.writeLine(writer, datosClinicos.toCSVStrings(), '\t');
+				CSVExport.writeLine(writer, datosClinicos.toCSVStrings(), separator);
 			}	
 
 			output = writer.toString();

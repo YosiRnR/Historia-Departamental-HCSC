@@ -18,9 +18,9 @@ public class DatosClinicos {
 		
 		csvRow.add(Integer.toString(IdActuacion));
 		csvRow.add(Integer.toString(IdPaciente));
-		csvRow.add(Antecedentes);
-		csvRow.add(EnfermedadActual);
-		csvRow.add(EvolucionComentarios);
+//		csvRow.add(Antecedentes == null ? "" : Antecedentes.replaceAll("\\;", ""));
+//		csvRow.add(EnfermedadActual == null ? "" : EnfermedadActual.replaceAll("\\;", ""));
+//		csvRow.add(EvolucionComentarios == null ? "" : EvolucionComentarios.replaceAll("\\;", ""));
 		
 		return csvRow;
 	}

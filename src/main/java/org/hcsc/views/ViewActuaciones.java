@@ -306,8 +306,8 @@ public class ViewActuaciones extends HttpServlet {
 			Logger.getLogger(ViewActuaciones.class).info("Procesando " + debugRequestStrings.get(code)
 												+ " Usuario: " + idFacultativo + " (" + fecha + ")");
 			String result = citasCtrl.obtenerCitasPorFacultativo(idFacultativo, idFacultaAlt, fecha).toString();
-//			Logger.getLogger(ViewActuaciones.class)
-//				.info(debugRequestStrings.get(code) + " resultado: " + result);
+			Logger.getLogger(ViewActuaciones.class)
+				.info(debugRequestStrings.get(code) + " resultado: " + result);
 			
 			response.getWriter().print(result);
 			break;
@@ -377,7 +377,7 @@ public class ViewActuaciones extends HttpServlet {
 		case RQ_EXPORTAR_A_CSV: {
 			//int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
 			ControladorActuacion actuacionCtrl = new ControladorActuacion();
-			byte[] csvZip = actuacionCtrl.exportToCSV();
+			byte[] csvZip = actuacionCtrl.exportToCSVRelacionado();//exportToCSV();
 			
 			response.setContentType("application/zip");				
 			response.getOutputStream().write(csvZip);

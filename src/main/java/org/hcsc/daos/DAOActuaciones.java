@@ -108,6 +108,65 @@ public class DAOActuaciones {
 		return allDates;
 	}
 	
+	
+	public Actuacion obtenerPorIdActuacion(int idActuacion) throws HSCException {
+		Actuacion actuacion = null;
+		
+		String query = "SELECT TOP 1 * FROM Actuaciones"
+					+ " WHERE IdActuacion = ?";
+		
+		try {
+			stmt = connection.prepareStatement(query);
+			
+			stmt.setInt(1, idActuacion);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				actuacion = new Actuacion();
+				actuacion.setIdActuacion(rs.getInt("IdActuacion"));
+				actuacion.setIdPaciente(rs.getInt("IdPaciente"));
+				actuacion.setNumRegistro(rs.getInt("NumRegistro"));
+				actuacion.setFecha(rs.getDate("Fecha"));
+				actuacion.setIncapacidadTotal(rs.getInt("IncapacidadTotal") > 0 ? true : false);
+				actuacion.setCuratelaSalud(rs.getInt("CuratelaSalud") > 0 ? true : false);
+				actuacion.setCuratelaEconomica(rs.getInt("CuratelaEconomica") > 0 ? true : false);
+				actuacion.setProgramaContinuidadCuidados(rs.getInt("ProgramaContinuidadCuidados") > 0 ? true : false);
+				actuacion.setProgramaJoven(rs.getInt("ProgramaJoven") > 0 ? true : false);
+				actuacion.setFechaInicioProgramaJoven(rs.getDate("FechaInicioProJoven"));
+				actuacion.setFechaFinProgramaJoven(rs.getDate("FechaFinProJoven"));
+				
+				actuacion.setCodigoAgenda(rs.getString("CodigoAgenda"));
+				actuacion.setLugarAtencion(rs.getString("LugarAtencion"));
+				actuacion.setIdProfesional(rs.getString("IdProfesional"));
+				actuacion.setTipoPrestacion(rs.getString("TipoPrestacion"));
+				
+				actuacion.setEquipoDeCalle(rs.getInt("EquipoDeCalle") > 0 ? true : false);
+				
+				actuacion.setFechaAlta(rs.getDate("FechaAlta"));
+				actuacion.setMotivoAlta(rs.getInt("MotivoAlta"));
+				
+				actuacion.setNumeroCita(rs.getInt("NumeroCita"));
+				actuacion.setNumeroICU(rs.getString("NumICU"));
+				
+				actuacion.setFechaAltaEquipoCalle(rs.getDate("FechaAltaEquipoCalle"));
+				
+				actuacion.setMedidaProteccion(rs.getInt("MedidaProteccion") > 0 ? true : false);
+				actuacion.setResidencia(rs.getInt("Residencia") > 0 ? true : false);				
+			}
+		}
+		catch(SQLException ex) {
+			Logger.getLogger(DAOActuaciones.class).error("StackTrace: ", ex);
+			throw new HSCException("SQLException: obtenerPorIdActuacion()", ex);
+		}
+		finally {
+			closeResources();
+		}
+		
+		return actuacion;
+	}
+	
+	
 	/**
 	 * 
 	 * @param idPaciente
@@ -328,6 +387,30 @@ public class DAOActuaciones {
 	public int actualizar(Actuacion actuacion) throws HSCException {
 		int result = 0;
 		
+		// TODO: Código para intentar insertar siempre y no actualizar sobre el registro existente
+		// DE MOMENTO COMENTADO
+//		int newId = this.insertar(actuacion);
+//		String queryActualizacion =
+//				"INSERT INTO Actualizacion (IdActuacion, IdPaciente, Fecha, NumRegistro)"
+//				+ " VALUES(?, ?, ?, ?)";
+//		try {
+//			stmt = connection.prepareStatement(queryActualizacion);
+//			stmt.setInt (1, newId);
+//			stmt.setInt (2, actuacion.getIdPaciente());
+//			stmt.setDate(3, actuacion.getFecha());
+//			stmt.setInt (4, actuacion.getNumRegistro());
+//			
+//			result = stmt.executeUpdate();
+//		}
+//		catch(SQLException ex) {
+//			Logger.getLogger(DAOActuaciones.class).error("StackTrace: ", ex);
+//			throw new HSCException("SQLException: actualizar_con_insercion()", ex);			
+//		}
+//		finally {
+//			closeResources();
+//		}
+		// Fin de código para insertar en lugar de actualizar
+		
 		String query = "UPDATE Actuaciones SET IdPaciente = ?, Fecha = ?,"
 				+ " IncapacidadTotal = ?, CuratelaSalud = ?, CuratelaEconomica = ?,"
 				+ " ProgramaContinuidadCuidados = ?, ProgramaJoven = ?, FechaInicioProJoven = ?,"
@@ -475,5 +558,32 @@ public class DAOActuaciones {
 		
 		return actuaciones;
 	}
+	
+	public ArrayList<Integer> obtenerTodosIdActuaciones() throws HSCException {
+		ArrayList<Integer> actuaciones = new ArrayList<Integer>();
+		
+		String query = "SELECT TOP(50) idActuacion FROM Actuaciones ORDER BY idActuacion DESC";
+		
+		try {
+			stmt = connection.prepareStatement(query);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				actuaciones.add(rs.getInt("IdActuacion"));
+			}
+			
+		}
+		catch(SQLException ex) {
+			Logger.getLogger(DAOActuaciones.class).error("StackTrace: ", ex);
+			throw new HSCException("SQLException: obtenerTodosIdActuaciones()", ex);			
+		}
+		finally {
+			closeResources();
+		}
+		
+		return actuaciones;
+	}
+	
 	
 }

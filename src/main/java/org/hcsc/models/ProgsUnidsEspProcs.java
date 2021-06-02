@@ -17,11 +17,30 @@ public class ProgsUnidsEspProcs {
 		/**/
 		java.util.ArrayList<String> csvRow = new java.util.ArrayList<String>();
 		
+		String posiciones[] = {
+				"",
+				"Proceso Psicosis (No intervención precoz)",
+				"Programa Intervención Precoz Psicosis",
+				"Proceso Depresión",
+				"Proceso TCA",
+				"Unidad de Trastorno de Personalidad",
+				"Unidad de Psicogeriatría",
+				"Tratamiento ambulatorio intensivo SMNyA",
+				"Programa Transición",
+				"Programa C"
+			};
+		
 		csvRow.add(Integer.toString(idProgramasUnidadesProcesos));
 		csvRow.add(Integer.toString(idActuacion));
-		csvRow.add(Integer.toString(posicion));
-		csvRow.add(valor);
-		csvRow.add(csvDescripcion);
+//		csvRow.add(Integer.toString(posicion));
+		for (int i = 1; i < posiciones.length; i++) {
+			if (posicion == i)
+				csvRow.add(valor.isEmpty() ? "" : valor);
+			else
+				csvRow.add("");
+		}
+//		csvRow.add(valor);
+//		csvRow.add(csvDescripcion);
 		
 		return csvRow;
 	}

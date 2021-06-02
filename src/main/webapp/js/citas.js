@@ -10,7 +10,7 @@ const RQ_CERRAR_SESION             = 27;
 $(document).ready(function () {
 
 	let params = new Params([ "idFacultativo" ]);
-	if (params.results[0] === "24628" || params.results[0] === "22520" || params.results[0] === "27091") {
+	if (params.results[0] === "24628" || params.results[0] === "22520" || params.results[0] === "27091" || params.results[0] === "00001") {
 		$("#exportCSV").show();
 	}
 	else {

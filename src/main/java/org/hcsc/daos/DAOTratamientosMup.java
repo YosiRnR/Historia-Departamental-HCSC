@@ -153,7 +153,7 @@ public class DAOTratamientosMup {
 			
 			ResultSet rs = stmt.executeQuery();
 			
-			if (rs.next())
+			while (rs.next())
 			{
 				TratamientosMup tratamientosMup = new TratamientosMup();
 				

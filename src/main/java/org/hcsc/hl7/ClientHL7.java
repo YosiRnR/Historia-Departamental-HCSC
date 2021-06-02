@@ -434,8 +434,8 @@ public class ClientHL7 {
 					+ "TXA|1|INFORME " + prestacion + "|PDF||||||||||||||AU\r"
 					+ "OBX|1|ED|^^^^||^^PDF^BASE64^" + base64Pdf;
 						
-			Logger.getLogger(ClientHL7.class).info("Mensaje HL7 para enviar: ");
-			Logger.getLogger(ClientHL7.class).info(msgString);
+//			Logger.getLogger(ClientHL7.class).info("Mensaje HL7 para enviar: ");
+//			Logger.getLogger(ClientHL7.class).info(msgString);
 			
 			int count    = 0;
 			int maxTries = 5;

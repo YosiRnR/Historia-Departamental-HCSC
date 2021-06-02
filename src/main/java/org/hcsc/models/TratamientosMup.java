@@ -16,8 +16,8 @@ public class TratamientosMup {
 		
 		csvRow.add(Integer.toString(IdTratamientoMup));
 		csvRow.add(Integer.toString(IdActuacion));
-		csvRow.add(Descripcion);
-		csvRow.add(TratamientoRecomendacion);
+		csvRow.add(Descripcion == null ? "" : Descripcion.replaceAll("\n", " "));
+		csvRow.add(TratamientoRecomendacion == null ? "" : TratamientoRecomendacion.replaceAll("\n", " "));
 		
 		return csvRow;
 	}

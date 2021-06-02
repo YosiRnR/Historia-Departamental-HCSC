@@ -18,12 +18,45 @@ public class SitClinicaDAS {
 		/**/
 		java.util.ArrayList<String> csvRow = new java.util.ArrayList<String>();
 		
+		String posicionesSCF[] = {
+				"",
+				"Escala CGI",
+				"GAF",
+				"CGAF"
+			};
+		String posicionesDAS[] = {
+				"",
+				"Cuidado Personal",
+				"Funcionamiento Ocupacional",
+				"Funcionamiento Familiar",
+				"Funcionamiento Social Amplio"
+			};
+		
 		csvRow.add(Integer.toString(idSituacionClinicaFuncional));
 		csvRow.add(Integer.toString(idActuacion));
-		csvRow.add(Integer.toString(posicion));
-		csvRow.add(valor);
-		csvRow.add(Integer.toString(tipoSCFDAS));
-		csvRow.add(csvDescripcion);
+//		csvRow.add(Integer.toString(posicion));
+		if (tipoSCFDAS == 0) {
+			for (int i = 1; i < posicionesSCF.length; i++) {
+				if (posicion == i)
+					csvRow.add(valor);
+				else
+					csvRow.add("");
+			}
+		}
+		else if (tipoSCFDAS == 1) {
+			csvRow.add("");
+			csvRow.add("");
+			csvRow.add("");
+			for (int i = 1; i < posicionesDAS.length; i++) {
+				if (posicion == i)
+					csvRow.add(valor);
+				else
+					csvRow.add("");
+			}
+		}
+//		csvRow.add(valor);
+//		csvRow.add(Integer.toString(tipoSCFDAS));
+//		csvRow.add(csvDescripcion);
 		
 		return csvRow;
 	}

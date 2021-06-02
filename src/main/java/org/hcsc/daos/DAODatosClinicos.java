@@ -145,21 +145,21 @@ public class DAODatosClinicos {
 	public ArrayList<DatosClinicos> obtenerTodo() throws HSCException {
 		ArrayList<DatosClinicos> datosClinicosList = new ArrayList<DatosClinicos>();
 		
-		String query = "SELECT * FROM DatosClinicos";
+		String query = "SELECT IdActuacion, IdPaciente FROM DatosClinicos";
 		
 		try {
 			stmt = connection.prepareStatement(query);
 			
 			ResultSet rs = stmt.executeQuery();
 			
-			if (rs.next()) {
+			while (rs.next()) {
 				DatosClinicos datosClinicos = new DatosClinicos();
 				
 				datosClinicos.setIdActuacion(rs.getInt("IdActuacion"));
 				datosClinicos.setIdPaciente(rs.getInt("IdPaciente"));
-				datosClinicos.setAntecedentes(rs.getString("Antecedentes"));
-				datosClinicos.setEnfermedadActual(rs.getString("HistoriaActual"));
-				datosClinicos.setEvolucionComentarios(rs.getString("EvolucionComentarios"));
+//				datosClinicos.setAntecedentes(rs.getString("Antecedentes"));
+//				datosClinicos.setEnfermedadActual(rs.getString("HistoriaActual"));
+//				datosClinicos.setEvolucionComentarios(rs.getString("EvolucionComentarios"));
 				
 				datosClinicosList.add(datosClinicos);
 			}

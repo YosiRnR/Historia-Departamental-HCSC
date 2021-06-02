@@ -21,10 +21,32 @@ public class Tratamiento {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
+		String posiciones[] = {
+				"",
+				"Psicoterapia Individual",
+				"Psicoterapia Grupal",
+				"Psicoeducación Grupal",
+				"Grupo Multifamiliar",
+				"Terapia Familiar"
+			};
+//		String valores[] = {
+//				"",
+//				"0-5",
+//				"6-10",
+//				"11-15",
+//				"16-20"
+//			};
+		
 		csvRow.add(Integer.toString(idTratamiento));
 		csvRow.add(Integer.toString(idActuacion));
-		csvRow.add(Integer.toString(posicion));
-		csvRow.add(valor);
+//		csvRow.add(Integer.toString(posicion));
+//		csvRow.add(valor + ".");
+		for (int i = 1; i < posiciones.length; i++) {
+			if (posicion == i)
+				csvRow.add(valor.isEmpty() ? "" : valor);
+			else
+				csvRow.add("");
+		}
 		csvRow.add(fechaInicio == null ? "" : sdf.format(fechaInicio));
 		csvRow.add(fechaFin == null ? "" : sdf.format(fechaFin));
 		

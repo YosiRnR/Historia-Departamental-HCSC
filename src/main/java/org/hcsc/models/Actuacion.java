@@ -43,6 +43,29 @@ public class Actuacion {
 	
 	public java.util.List<String> toCSVStrings() {
 		/**/
+		String motivosAltaEquipoCalle[] = {
+				"",
+				"Retoma seguimiento previo en Salud Mental",
+				"Inicia seguimiento en otro dispositivo",
+				"Redefinición diagnóstica",
+				"Integración en la Red Normalizada de Salud Mental",
+				"Programa de Retorno Supervisado a su país de origen",
+				"Derivación a Dispositivo de Larga Estancia",
+				"Derivación a Dispositivo de Psicogeriatría",
+				"Internamiento en Centro Penintenciario",
+				"Exitus",
+				"Desaparición"
+		};
+		String motivosAltaHospital[] = {
+				"",
+				"Derivación AP",
+				"Derivación otro especialista o servicio",
+				"Derivación a CSM de HCSC",
+				"Traslado área",
+				"Abandono",
+				"Defunción"
+		};
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		java.util.ArrayList<String> csvRow = new java.util.ArrayList<String>();
@@ -69,7 +92,11 @@ public class Actuacion {
 		csvRow.add(equipoDeCalle ? "true" : "false");
 		String fechaAltaStr = fechaAlta == null ? "" : sdf.format(fechaAlta);
 		csvRow.add(fechaAltaStr == null ? "" : fechaAltaStr);
-		csvRow.add(Integer.toString(motivoAlta));
+//		csvRow.add(Integer.toString(motivoAlta));
+		if (numeroCita == 0)
+			csvRow.add(motivosAltaEquipoCalle[motivoAlta]);
+		else
+			csvRow.add(motivosAltaHospital[motivoAlta]);
 		
 		csvRow.add(Integer.toString(numeroCita));
 		csvRow.add(numeroICU);

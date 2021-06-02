@@ -27,7 +27,6 @@ import org.w3c.dom.NodeList;
 
 
 public class LoginChecker {
-	
 	private static final String servletLDAPUser = "05667997S";
 	private static final String servletLDAPPass = "Temporal05";
 	
@@ -39,21 +38,21 @@ public class LoginChecker {
 		DALoginState loginState     = new DALoginState();
 		String validarUsuarioResult = null;
 		
-//		String SOAPMessage =
-//				"<?xml version='1.0' encoding='utf-8'?>\n" +
-//				"<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " +
-//				"xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'>\n" +
-//				"<soap:Body>\n" +
-//				"<ValidarUsuario xmlns='https://gestionai.salud.madrid.org/'>\n" +
-//				"<userLogin>" + servletLDAPUser + "</userLogin>\n" +
-//				"<userPassword>" + servletLDAPPass + "</userPassword>\n" +
-//				//"<userPassword>Temporal05</userPassword>\n" +
-//				"<login>" + user + "</login>\n" +
-//				"<password>" + password + "</password>\n" +
-//				"</ValidarUsuario>\n" +
-//				"</soap:Body>\n" +
-//				"</soap:Envelope>";
-//		
+		String SOAPMessage =
+				"<?xml version='1.0' encoding='utf-8'?>\n" +
+				"<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " +
+				"xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'>\n" +
+				"<soap:Body>\n" +
+				"<ValidarUsuario xmlns='https://gestionai.salud.madrid.org/'>\n" +
+				"<userLogin>" + servletLDAPUser + "</userLogin>\n" +
+				"<userPassword>" + servletLDAPPass + "</userPassword>\n" +
+				//"<userPassword>Temporal05</userPassword>\n" +
+				"<login>" + user + "</login>\n" +
+				"<password>" + password + "</password>\n" +
+				"</ValidarUsuario>\n" +
+				"</soap:Body>\n" +
+				"</soap:Envelope>";
+		
 //		try {
 //			SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
 //			SOAPConnection soapConnection = soapConnectionFactory.createConnection();
@@ -127,9 +126,15 @@ public class LoginChecker {
 //						.error("UnsupportedOperationException: StackTrace: ", e);
 //		}
 //		catch(SOAPException e) {
-////			Logger.getLogger(LoginChecker.class)
-////						.error("SOAPException: StackTrace: ", e);
-//			throw new HSCException("SOAPException", e);
+//			Logger.getLogger(LoginChecker.class)
+//						.error("SOAPException: StackTrace: ", e);
+//			
+//			if (user.equalsIgnoreCase("25184856V")) {
+//				validarUsuarioResult = "LOGIN_OK";
+//			}
+//			else {
+//				throw new HSCException("SOAPException", e);
+//			}
 //		}
 //		
 //		loginState.setState(validarUsuarioResult);

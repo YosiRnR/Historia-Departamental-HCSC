@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    
+    font-family: Arial, sans-serif
+}
+
+html, body {
+    height: 100%;
+}
+
+header {
+	display:flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#logo {
+	width: 30%;	
+}
+#logo img {
+    max-width: calc(100%);
+    min-width: 260px;
+}
+
+
+/* ---------- FORMULARIOS ------------------*/
+main {
+    display: flex;
+	align-content: center;
+    align-items: center;
+    padding-top: 20px;
+    margin-bottom: 50px;
+}
+main > div {
+	width: 70%;
+	margin: 0 auto;
+}
+select, input, label {
+    height: 28px;
+}
+form fieldset {
+    margin-top: 20px;
+}
+fieldset {
+    padding: 30px 20px 20px;
+    border: 2px solid #369acc;
+}
+fieldset > div {
+	display: flex;
+	align-items: center;
+	align-content: center;
+}
+legend {
+    padding: 0 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.row {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	margin: 8px 0;	
+}
+.col-label {
+	flex: 0 1 43%;
+}
+.col-label-g1 {
+	flex: 0 1 35%;
+}
+.col-desplegable {
+	flex: 0 1 200px;
+}
+.col {
+	flex: 0 1 200px;
+}
+/* ---------- BOTONES ------------------*/
+.btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 25px;
+}
+
+.btn button {
+    font-weight: bold;
+    padding: 7px;
+    border: 1px solid #369acc;
+    background-color: white;
+    box-shadow: 5px 5px 5px gray
+}
+
+.btn button:disabled {
+    color: gray;
+    background-color: lightblue;
+    box-shadow: 5px 5px 5px gray
+}
+
+.btn button:not(:disabled):hover {
+    background-color: #369acc;
+    color: white;
+    cursor: pointer;
+}
+
+.btn button:not(:disabled):active {
+    background-color: #e53832;
+    border: 1px solid #e53832;
+}
+
+.btn button:focus {
+    outline: 0;
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>HCSCPsiquiatria Registro Paciente</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="css/proc_depresion.css">
+		<script type="application/javascript" src="js/jquery-3.4.1.min.js"></script>
+		<script type="application/javascript" src="js/aes.js"></script>	
+        <script type="application/javascript" src="js/FileSaver.min.js"></script>
+		<script type="application/javascript" src="js/config.js"></script>
+	</head>
+	<body>
+		<header>
+			<div id="logo">
+				<img src="img/logo.jpg" alt="Logo" id="logo-img">
+			</div>
+		</header>
+		
+		<main>
+   			<div>
+	       		<form id="proceso-depresion">
+	       			<fieldset>
+	       				<legend>Proceso Depresión</legend>
+							<div class="checks row">
+								<label class="col-label-g1" for="depresion-resistente">Depresión resistente</label>
+								<input id="depresion-resistente" name="depresion-resistente" type="checkbox">
+							</div>		
+							<div class="checks row">
+								<label class="col-label-g1" for="depresion-recurrente">Depresión recurrente con síntomas residuales entre episodios</label>
+								<input id="depresion-recurrente" name="depresion-recurrente" type="checkbox">
+							</div>
+							<div class="row">
+								<label class="col-label-g1" for="cuestionario-phq9">Cuestionario PHQ-9</label>
+								<input class="col" id="cuestionario-phq9" name="cuestionario-phq9" type="text">
+								<div class="btn">
+									<button>Imprimir formulario</button>
+								</div>
+							</div>		
+						<fieldset style="margin-top:3rem;">
+							<legend>Escala de resistencia al tratamiento de Maudslay (MSM)</legend>
+							<div class="row">
+								<label class="col-label" for="duracion-episodio">Duración del episodio</label>
+								<select class="col-desplegable" name="duracion-episodio" id="duracion-episodio">
+									<option value="0">-- Seleccione valor</option>
+									<option value="1">Agudo (&lt;/= 12 meses)</option>
+									<option value="2">Subagudo (13-24 meses)</option>
+									<option value="3">Crónico (&gt; 24 meses)</option>
+								</select>
+							</div>
+							<div class="row">
+								<label class="col-label" for="gravedad-sintomas">Gravedad de los síntomas al comienzo del episodio</label>
+								<select class="col-desplegable" name="gravedad-sintomas" id="gravedad-sintomas">
+									<option value="0">-- Seleccione valor</option>
+									<option value="1">Subsindrómicos</option>
+									<option value="2">Leves</option>
+									<option value="3">Moderados</option>
+									<option value="4">Graves sin psicosis</option>
+									<option value="5">Graves con psicosis</option>
+								</select>
+							</div>
+							<div class="row">
+								<label class="col-label" for="antidepresivos">Antidepresivos de diferente familia con tiempo suficiente de administración</label>
+								<select class="col-desplegable" name="antidepresivos" id="antidepresivos">
+									<option value="0">-- Seleccione valor</option>
+									<option value="1">Nivel 1 (1-2 fármacos)</option>
+									<option value="2">Nivel 2 (3-4 fármacos)</option>
+									<option value="3">Nivel 3 (5-6 fármacos)</option>
+									<option value="4">Nivel 4 (7-10 fármacos)</option>
+									<option value="5">Nivel 5 (&gt; 10 fármacos)</option>
+								</select>
+							</div>
+							<div class="row">
+								<label class="col-label" for="estrategia">Antidepresivos de diferente familia con tiempo suficiente de administración</label>
+								<select class="col-desplegable" name="estrategia" id="estrategia">
+									<option value="0">No utilizada</option>
+									<option value="1">Utilizada</option>
+								</select>
+							</div>
+							<div class="row">
+								<label class="col-label" for="terapia">Antidepresivos de diferente familia con tiempo suficiente de administración</label>
+								<select class="col-desplegable" name="terapia" id="terapia">
+									<option value="0">No utilizada</option>
+									<option value="1">Utilizada</option>
+								</select>
+							</div>
+							<div class="row">
+								<label class="col-label" for="msm-total">Puntuación Total</label>
+								<input class="col-desplegable" id="msm-total" name="msm-total" type="text">
+							</div>
+						</fieldset>
+					</fieldset>
+					<div>
+						<div class="btn">
+							<button style="margin: 25px 25px 0 25px; width: 80px;">Aceptar</button>
+							<button style="margin: 25px 25px 0 25px; width: 80px;">Cancelar</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</main>		
+	</body>               	
+</html>

@@ -264,6 +264,8 @@ function nuevoRegistro() {
 //		}
 //	});
 	
+	// Si quitamos esto, nos permite que el Nuevo Registro se cree a partir de los datos
+	// del registro en el que le demos al boton, en lugar de usar siempre los datos del ultimo registro
 	if (registroActual < totalRegistros) {
 		mostrarActuacionAlmacenada(actuacionAbierta);
 	}
@@ -2072,7 +2074,9 @@ function goMUP(e) {
 	MUPLocation += "&codambito=CEX";
 	MUPLocation += "&tipoapertura=NUEVAVENTANA";
 	MUPLocation += "&dni=" + gUserDni;
+	
 	if (gUserCias !== 'NULL') MUPLocation += "&cias=" + gUserCias;
+	
 	if (numeroICU !== "" && !isNaN(numeroICU) && numeroICU !== "-1" && numeroICU !== "0") {
 		MUPLocation += "&numIcu=" + numeroICU;
 	}
@@ -2097,6 +2101,7 @@ function goMUP(e) {
 	
 	//location.href = MUPLocation;
 	window.open(MUPLocation, '_blank');
+	//alert(MUPLocation);
 }
 
 

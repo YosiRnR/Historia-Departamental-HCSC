@@ -170,6 +170,9 @@ public class DAOCitas {
 				cita.setApellido1Paciente(rs.getString("Apellido1Paciente"));
 				cita.setApellido2Paciente(rs.getString("Apellido2Paciente"));
 				
+				/** Todo esto está comentado porque ya no hay que buscar los demograficos del paciente
+				 ** en el HP-HIS, los demograficos del paciente vienen ahora de la tabla de CitasTest
+				 **/
 //				Paciente pacienteABuscar = new Paciente();
 //				
 //				/** Establece el numero de historia clinica procedente de la Cita

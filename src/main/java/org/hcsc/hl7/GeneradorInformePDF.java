@@ -526,7 +526,9 @@ public class GeneradorInformePDF {
 			enfermedadActualLines.addAll(currentLine);
 		}
 		
-		if (this.cursorPosY >= this.pageHeight) {
+		float height = ((enfermedadActualLines.size()) * this.fontLeading) + CONTENT_FONT_SIZE + CONTENT_FONT_SIZE / 2; 
+		
+		if (this.cursorPosY >= this.pageHeight || (this.cursorPosY + height + 10 >= this.pageHeight)) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
 			//anotherPage.setUserUnit(72);
@@ -551,7 +553,6 @@ public class GeneradorInformePDF {
 		
 		this.contentStream.setNonStrokingColor(new Color(220, 220, 220));
 		int rectY    = (int)this.getPosY(this.cursorPosY, 0) - CONTENT_FONT_SIZE / 2;
-		float height = ((enfermedadActualLines.size()) * this.fontLeading) + CONTENT_FONT_SIZE + CONTENT_FONT_SIZE / 2; 
 		this.contentStream.addRect(MARGIN_LEFT - 2, rectY, 522, -height);
 		this.contentStream.stroke();
 
@@ -578,7 +579,9 @@ public class GeneradorInformePDF {
 			evolucionComentariosLines.addAll(currentLine);
 		}
 		
-		if (this.cursorPosY >= this.pageHeight) {
+		float height = ((evolucionComentariosLines.size()) * this.fontLeading) + CONTENT_FONT_SIZE + CONTENT_FONT_SIZE / 2;
+		
+		if (this.cursorPosY >= this.pageHeight || (this.cursorPosY + height + 10 >= this.pageHeight)) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
 			//anotherPage.setUserUnit(72);
@@ -604,7 +607,6 @@ public class GeneradorInformePDF {
 		
 		this.contentStream.setNonStrokingColor(new Color(220, 220, 220));
 		float rectY  = this.getPosY(this.cursorPosY, 0) - CONTENT_FONT_SIZE / 2;
-		float height = ((evolucionComentariosLines.size()) * this.fontLeading) + CONTENT_FONT_SIZE + CONTENT_FONT_SIZE / 2;
 		this.contentStream.addRect(MARGIN_LEFT - 2, rectY, 522, -height);
 		this.contentStream.stroke();
 
@@ -635,7 +637,21 @@ public class GeneradorInformePDF {
 		
 		JsonArray tratamientos = jsonData.get("tratamientos").getAsJsonArray();
 
-		if (this.cursorPosY >= this.pageHeight) {
+//		if (this.cursorPosY >= this.pageHeight) {
+//			PDPage anotherPage = new PDPage();
+//			this.pages.add(anotherPage);
+//			//anotherPage.setUserUnit(72);
+//			this.document.addPage(anotherPage);
+//			this.contentStream.close();
+//			this.contentStream = new PDPageContentStream(this.document, anotherPage);
+//			this.cursorPosY = 30;
+//		}
+		
+		// El +15 es por el espacio que se añade para separar los 2 contenidos de los tratamientos //
+		float height = ((tratamientosRecomendacionesLines.size() + tratamientos.size()) * this.fontLeading) + CONTENT_FONT_SIZE + 15;
+		
+		// El +10 es por el alto de la cabecera del recuadro
+		if ((this.cursorPosY >= this.pageHeight) || (this.cursorPosY + height + 10 >= this.pageHeight)) {
 			PDPage anotherPage = new PDPage();
 			this.pages.add(anotherPage);
 			//anotherPage.setUserUnit(72);
@@ -644,9 +660,6 @@ public class GeneradorInformePDF {
 			this.contentStream = new PDPageContentStream(this.document, anotherPage);
 			this.cursorPosY = 30;
 		}
-		
-		// El +15 es por el espacio que se añade para separar los 2 contenidos de los tratamientos //
-		float height = ((tratamientosRecomendacionesLines.size() + tratamientos.size()) * this.fontLeading) + CONTENT_FONT_SIZE + 15; 
 
 		float rectY  = this.getPosY(this.cursorPosY, 0) - CONTENT_FONT_SIZE / 2;
 		
