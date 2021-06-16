@@ -10,6 +10,16 @@
 		<script type="application/javascript" src="js/aes.js"></script>	
         <script type="application/javascript" src="js/FileSaver.min.js"></script>
 		<script type="application/javascript" src="js/config.js"></script>
+		<script>
+			function sumaValoresMaudslay() {
+				var suma = parseInt($( "#duracion-episodio option:selected" ).val());
+				suma += parseInt($( "#gravedad-sintomas option:selected" ).val());
+				suma += parseInt($( "#antidepresivos option:selected" ).val());
+				suma += parseInt($( "#estrategia option:selected" ).val());
+				suma += parseInt($( "#terapia option:selected" ).val());
+				$("#msm-total").val(suma);
+			}
+		</script>				
 	</head>
 	<body>
 		<header>
@@ -32,17 +42,17 @@
 								<input id="depresion-recurrente" name="depresion-recurrente" type="checkbox">
 							</div>
 							<div class="row">
-								<label class="col-label-g1" for="cuestionario-phq9">Cuestionario PHQ-9</label>
+								<label class="col-label-g1" for="cuestionario-phq9">Puntuaci&oacute;n cuestionario PHQ-9</label>
 								<input class="col" id="cuestionario-phq9" name="cuestionario-phq9" type="text">
 								<div class="btn">
-									<button>Imprimir formulario</button>
+									<button>Imprimir cuestionario</button>
 								</div>
 							</div>		
-						<fieldset style="margin-top:3rem;">
-							<legend>Escala de resistencia al tratamiento de Maudslay (MSM)</legend>
+						<!--<fieldset style="margin-top:3rem;">-->
+							<p style="font-size:18px; margin:40px 0 20px 0;">Escala de resistencia al tratamiento Maudslay (MSM)</p>
 							<div class="row">
 								<label class="col-label" for="duracion-episodio">Duración del episodio</label>
-								<select class="col-desplegable" name="duracion-episodio" id="duracion-episodio">
+								<select class="col-desplegable" name="duracion-episodio" id="duracion-episodio" onchange="sumaValoresMaudslay()">
 									<option value="0">-- Seleccione valor</option>
 									<option value="1">Agudo (&lt;/= 12 meses)</option>
 									<option value="2">Subagudo (13-24 meses)</option>
@@ -51,7 +61,7 @@
 							</div>
 							<div class="row">
 								<label class="col-label" for="gravedad-sintomas">Gravedad de los síntomas al comienzo del episodio</label>
-								<select class="col-desplegable" name="gravedad-sintomas" id="gravedad-sintomas">
+								<select class="col-desplegable" name="gravedad-sintomas" id="gravedad-sintomas" onchange="sumaValoresMaudslay()">
 									<option value="0">-- Seleccione valor</option>
 									<option value="1">Subsindrómicos</option>
 									<option value="2">Leves</option>
@@ -61,8 +71,8 @@
 								</select>
 							</div>
 							<div class="row">
-								<label class="col-label" for="antidepresivos">Antidepresivos de diferente familia con tiempo suficiente de administración</label>
-								<select class="col-desplegable" name="antidepresivos" id="antidepresivos">
+								<label class="col-label" for="antidepresivos">Antidepresivos con tiempo suficiente de administración</label>
+								<select class="col-desplegable" name="antidepresivos" id="antidepresivos" onchange="sumaValoresMaudslay()">
 									<option value="0">-- Seleccione valor</option>
 									<option value="1">Nivel 1 (1-2 fármacos)</option>
 									<option value="2">Nivel 2 (3-4 fármacos)</option>
@@ -72,15 +82,15 @@
 								</select>
 							</div>
 							<div class="row">
-								<label class="col-label" for="estrategia">Antidepresivos de diferente familia con tiempo suficiente de administración</label>
-								<select class="col-desplegable" name="estrategia" id="estrategia">
+								<label class="col-label" for="estrategia">Estrategia de potenciaci&oacute;n (con f&aacute;rmacos no ATD)</label>
+								<select class="col-desplegable" name="estrategia" id="estrategia" onchange="sumaValoresMaudslay()">
 									<option value="0">No utilizada</option>
 									<option value="1">Utilizada</option>
 								</select>
 							</div>
 							<div class="row">
-								<label class="col-label" for="terapia">Antidepresivos de diferente familia con tiempo suficiente de administración</label>
-								<select class="col-desplegable" name="terapia" id="terapia">
+								<label class="col-label" for="terapia">Terapia Electroconvulsiva</label>
+								<select class="col-desplegable" name="terapia" id="terapia" onchange="sumaValoresMaudslay()">
 									<option value="0">No utilizada</option>
 									<option value="1">Utilizada</option>
 								</select>
@@ -89,7 +99,7 @@
 								<label class="col-label" for="msm-total">Puntuación Total</label>
 								<input class="col-desplegable" id="msm-total" name="msm-total" type="text">
 							</div>
-						</fieldset>
+						<!--</fieldset>-->
 					</fieldset>
 					<div>
 						<div class="btn">
@@ -99,6 +109,6 @@
 					</div>
 				</form>
 			</div>
-		</main>		
+		</main>
 	</body>               	
 </html>
